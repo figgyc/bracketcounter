@@ -1,0 +1,18 @@
+(settings) {
+    encode gzip
+    log stdout
+    file_server {
+        hide ssl.pem ssl.key key.ts key.js.map key.js
+    }
+    reverse_proxy /socket localhost:8080 {
+    }
+}
+
+bfb.figgyc.uk {
+    import settings
+    tls ssl.pem ssl.key
+}
+
+localhost {
+    import settings
+}

@@ -1,0 +1,38 @@
+{
+  "name": "yt-comments",
+  "version": "1.0.0",
+  "description": "Calculates bfb vote numbers",
+  "main": "yt-comments.js",
+  "dependencies": {
+    "@types/google.visualization": "0.0.52",
+    "@types/node-fetch": "^1.6.7",
+    "@types/ws": "^4.0.1",
+    "async": "^2.6.0",
+    "async-while": "^1.1.0",
+    "console-stamp": "^0.2.9",
+    "node-fetch": "^1.7.3",
+    "ps-node": "^0.1.6",
+    "ws": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/async": "^2.0.47",
+    "@types/node": "^9.6.55",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "test": "node yt-comments.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/figgyc/yt-comments.git"
+  },
+  "keywords": [
+    "bfb"
+  ],
+  "author": "figgyc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/figgyc/yt-comments/issues"
+  },
+  "homepage": "https://github.com/figgyc/yt-comments#readme"
+}
