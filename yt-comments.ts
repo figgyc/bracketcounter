@@ -227,7 +227,7 @@ function go() {
 		let dateDeadline: Date = new Date(
 			Date.parse(obj.items[0].snippet.publishedAt)
 		);
-		dateDeadline.setHours(dateDeadline.getHours() + +config.deadlineHours); // 12h = 60h ala BFB 3
+		dateDeadline.setHours(dateDeadline.getHours() + +config.deadlineHours);
 		deadline = +dateDeadline;
 		api.uploader = obj.items[0].snippet.channelId;
 		totalComments = obj.items[0].statistics.commentCount;

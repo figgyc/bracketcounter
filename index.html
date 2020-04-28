@@ -10,6 +10,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
         html {
             font-family: Roboto, sans-serif;
+            font-size: medium;
         }
         textarea {
             background-color: darkslategrey;
@@ -39,6 +40,17 @@
         }
         a:visited {
             color: #999999;
+        }
+
+        button {
+            border: none;
+            background: #333;
+            color: white;
+            font-size: medium;
+            font-family: Roboto, sans-serif;
+            padding: 0.5em;
+            border-radius: 4px;
+            appearance: none;
         }
     </style>
 </head>
@@ -85,11 +97,11 @@
             </li>
             <li>I reserve the right to recollect data temporarily after the vote period finishes for the purpose of providing the service to YouTube for audit purposes.</li>
             <li>Although the YouTube Terms of Service designate your comment(s) as Content and provide other users with access to them, you may request the website not count comments connected to your YouTube channel by contacting the email at the end of the privacy policy, including a link to your YouTube channel. This request will be respected as soon as possible. Please note that this request does not affect your comments on YouTube and other parties are still able to collect that data. Of course if you wish that nobody can read your comments, then you should use a YouTube Application to delete the comment.</li>
-            <li>This website only stores one piece of data on your device which is used to track whether or not you have accepted this legal notice. This data is not transmitted to my server and is only kept on this device to ensure you have read the notice.</li>
+            <li>This website only stores one piece of data on your device using localStorage technology which is used to track whether or not you have accepted this legal notice. This data is not transmitted to my server and is only kept on this device to ensure you have read the notice. If you do not wish for this website to store data on this device then decline the notice.</li>
             <li>This website is operated by figgyc and you can contact me with the email address <a href="mailto:bracketcounter@figgyc.uk">bracketcounter@figgyc.uk</a>. </li>
         </ul>
-        <button id="accept">Accept</button>
-        <a href="https://google.com" onclick=" localStorage.setItem('privacyVersion', '0')" id="decline">Decline</a>
+        <button id="accept">Accept</button> 
+        <a href="https://google.com" onclick=" localStorage.clear()" id="decline">Decline</a> You may change your preference at any time by clicking the Legal Notices button at the bottom right of the page.
     </div>
 </body>
 </html>
