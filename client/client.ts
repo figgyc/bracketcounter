@@ -56,8 +56,7 @@ function init() {
 !Icon
 !Contestant
 !Votes
-!Percentage of votes
-`;
+!Percentage of votes`;
         let table = [
             ['Contestant', 'Votes', {
                 role: 'style'
@@ -74,26 +73,22 @@ function init() {
             let text = translations[letter] + ": " + ob.votes[letter] + " (" + percent.substring(0,4) + "%)";
             table.push([translations[letter], ob.votes[letter], colors[letter], text]);
             discordPostable += translations[letter] + ' '.repeat(18 - translations[letter].length) + ob.votes[letter] + ' '.repeat(6 - ob.votes[letter].toString().length) + '[' + percent.substring(0,4) + '%]\n';
-        }
-        for (const letter of sortedKeys.reverse()) {
             let isGreen = (letter == sortedKeys[0])
             let isRed = (letter == sortedKeys[sortedKeys.length-1])
             let colorPrefix = isGreen ? "{{Color|green|" : (isRed ? "{{Color|red|" : "")
             let colorSuffix = (isGreen || isRed) ? "}}" : ""
-            let percent = (ob.votes[letter] / ob.total * 100).toFixed(1);
-            if (letter != '4' && letter != 'x') {
-                wikiaPostable += `|-
+            let percent2 = (ob.votes[letter] / ob.total * 100).toFixed(1);
+            wikiaPostable += `
+|-
 |{{TeamIconSpoiler|${config.contestants[letter][0].replace(' ', '')}}}
 |{{Spoilerdiv|[[${config.contestants[letter][0]}]]}}
 |${colorPrefix}${ob.votes[letter]}${colorSuffix}
-|${colorPrefix}${percent}%${colorSuffix}
-`;
-            }
+|${colorPrefix}${percent2}%${colorSuffix}`;
+        
         }
-        sortedKeys.reverse();
         let data = google.visualization.arrayToDataTable(table);
         let updateDate = new Date(status.updateDate);
-        wikiaPostable += '|}';
+        wikiaPostable += '\n|}';
         let minutesLeft = Math.round((status.deadline - +(updateDate)) / 60000);
         let hoursLeft = Math.round(minutesLeft / 60);
         let onlyMinsLeft = Math.round(minutesLeft % 60);

@@ -10,16 +10,18 @@ export class YoutubeAPI3 {
     checkFinished: Function
     processEntry: Function
     setDone: Function
+    setTotalComments: Function
     public paged: boolean = false
     public uploader: string = "" // used to not stop rescanning pinned comments since pins are not reported in youtube's api
     pageflag: boolean = false
 
     async snooze(ms: number) { new Promise(resolve => setTimeout(resolve, ms)); }
 
-    constructor(checkFinished: Function, processEntry: Function, setDone: Function) {
+    constructor(checkFinished: Function, processEntry: Function, setDone: Function, setTotalComments: Function) {
         this.checkFinished = checkFinished
         this.processEntry = processEntry
         this.setDone = setDone
+        this.setTotalComments = setTotalComments
     }
 
     // helper function for below to be easier to use, encodes objects to query strings
@@ -127,12 +129,11 @@ export class YoutubeAPI3 {
             for (let reply of item.replies.comments) {
                 reply.isReply = true;
                 // console.log("REPLY", reply)
-                this.noteItem(reply)
             }
             if (item.replies.comments.length < item.snippet.totalReplyCount) {
-                console.log(item, item.snippet.topLevelComment.snippet.authorChannelId)
+                console.log("reply", item, item.snippet.topLevelComment.snippet.authorChannelId)
                 if (!this.pageflag || (item.snippet.topLevelComment && item.snippet.topLevelComment.snippet.authorChannelId.value != this.uploader)) { // This is to prevent any JNJ pinned comments from disrupting the automatic page limiter since they are always scanned
-                    console.log("getting extra replies", item.replies.comments.length, item.snippet.totalReplyCount);
+                    console.log("getting extra replies", this.pageflag, item.replies.comments.length, item.snippet.totalReplyCount);
                     this.getReplies(item.id) //uses too much api but hey
                 }
             }
@@ -164,11 +165,12 @@ export class YoutubeAPI3 {
         pageflag: boolean = false
     ) {
         this.pageflag = pageflag
+        console.log("loading comments")
         //    gapi.client.youtube.commentThreads.list({part: 'snippet', videoId: id, moderationStatus: modStatus, textFormat: 'plainText', order: 'time', maxResults: 100, pageToken: pageToken}).then(resp => {
         this.apiFast("commentThreads", {
             part: "snippet,replies",
             fields:
-                "items(id,snippet(topLevelComment,totalReplyCount),replies),nextPageToken",
+                "items(id,snippet(topLevelComment,totalReplyCount),replies),nextPageToken,pageInfo(totalResults)",
             videoId: id,
             moderationStatus: modStatus,
             textFormat: "plainText",
@@ -182,12 +184,20 @@ export class YoutubeAPI3 {
             } else {
                 if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {
                     this.snooze(1000).then(() => {
-                        if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) // recheck paged
-                            this.loadComments(id, modStatus, obj.nextPageToken);
+                        if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
+                            this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
+                        } else {
+                            this.setDone();
+                            console.log("refresh done");
+                        }
                     })
                 } else {
                     this.setDone();
                     console.log("refresh done");
+                }
+                if (obj.pageInfo) {
+                    //this.setTotalComments(obj.pageInfo.totalResults) broken?
+                    //console.log(obj.pageInfo)
                 }
                 async.each(obj.items, (item: object) => {
                     this.noteItem(item);

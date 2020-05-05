@@ -1,18 +1,27 @@
 export namespace config {
-    export const id: string = "oav0TXI6bqc";
+    export const id: string = "8HATkU_F0iE";
     export const countMultiVoters: boolean = false;
     export const deadlineHours: number = 48; // only count comments up to this time after the video
-    export const refreshTime: number = 240; // amount of seconds to wait between runs of the background task and page refresh
+    export const refreshTime: number = 120; // amount of seconds to wait between runs of the background task and page refresh
     export const re: RegExp = /\[(.)\]/g; // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
     // this object moderates who is a real contestant.
     export const contestants: { [contestant: string]: [string, string] } = { // color, name
-        a: ["Balloony", "#00bf83"],
-        b: ["Bubble", "#c7eof7"],
-        c: ["Gelatin", "#76e81c"],
-        d: ["Leafy", "#5ee103"],
-        e: ["Lollipop", "#cd78fb"],
-        f: ["Ruby", "#c1061a"],
-        g: ["Teardrop", "#4eb4eb"]
+        /* 4cteam
+        //a: ["Balloony", "#00bf83"], bfb18 gone
+        a: ["Bubble", "#c7eof7"],
+        b: ["Gelatin", "#76e81c"],
+        c: ["Leafy", "#5ee103"],
+        d: ["Lollipop", "#cd78fb"],
+        e: ["Ruby", "#c1061a"],
+        f: ["Teardrop", "#4eb4eb"] */
+        a: ["Blocky", "#e43d3c"],
+        b: ["Firey", "#fdcc03"],
+        c: ["Flower", "#ff9aff"],
+        d: ["Loser", "#fff3ae"],
+        e: ["Spongy", "#f3d600"],
+        f: ["Taco", "#eee0b5"],
+        g: ["Woody", "#ebbc63"],
+
     }; // template object to ensure ordering is correct
 
     export const blacklist: string[] = [

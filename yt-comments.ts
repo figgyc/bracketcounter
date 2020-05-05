@@ -2,7 +2,7 @@ import { YoutubeAPI3 } from "./api"
 import {config} from "./config"
 import WebSocket from "ws";
 import * as fs from "fs";
-const api = new YoutubeAPI3(checkFinished, processEntry, setDone)
+const api = new YoutubeAPI3(checkFinished, processEntry, setDone, setTotalComments)
 
 require('console-stamp')(console, []);
 
@@ -40,7 +40,9 @@ wss.on('connection', function connection(ws) {
 wss.on('error', () => console.log('errored'));
 
 
-
+function setTotalComments(ttotalComments: number) {
+	totalComments = ttotalComments
+}
 
 
 // these are changed by various things
