@@ -24,6 +24,10 @@ function privacyAccept() {
 }
 document.querySelector("#accept")?.addEventListener("click", privacyAccept)
 
+function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function init() {
     if (initialized) return
     initialized = true // dont run twice
@@ -82,17 +86,18 @@ function init() {
 |-
 |{{TeamIconSpoiler|${config.contestants[letter][0].replace(' ', '')}}}
 |{{Spoilerdiv|[[${config.contestants[letter][0]}]]}}
-|${colorPrefix}${ob.votes[letter]}${colorSuffix}
+|${colorPrefix}${numberWithCommas(ob.votes[letter])}${colorSuffix}
 |${colorPrefix}${percent2}%${colorSuffix}`;
         
         }
         let data = google.visualization.arrayToDataTable(table);
         let updateDate = new Date(status.updateDate);
         wikiaPostable += '\n|}';
-        let minutesLeft = Math.round((status.deadline - +(updateDate)) / 60000);
-        let hoursLeft = Math.round(minutesLeft / 60);
-        let onlyMinsLeft = Math.round(minutesLeft % 60);
-        let statusString = `Video ID: ${status.id} Comments read: ${status.comments} (${(status.comments / status.totalComments * 100).toFixed(1)}%) Votes: ${status.validVotes} Last update: ${updateDate.toLocaleTimeString()} (${hoursLeft}h ${onlyMinsLeft}m left)`;
+        let minutesLeft = ((status.deadline - +(updateDate)) / 60000);
+        let hoursLeft = Math.floor(minutesLeft / 60);
+        let onlyMinsLeft = Math.floor(minutesLeft % 60);
+        let secsLeft = Math.floor(((minutesLeft % 60) * 60) % 60);
+        let statusString = `Video ID: ${status.id} Comments read: ${status.comments} (${(status.comments / status.totalComments * 100).toFixed(1)}%) Votes: ${status.validVotes} Last update: ${updateDate.toLocaleTimeString()} (${hoursLeft}h ${onlyMinsLeft}m ${secsLeft}s left)`;
         statusElement.innerText = statusString;
         discordPostable += `/************************/
 Comments            ${status.comments}

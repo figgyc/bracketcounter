@@ -78,14 +78,20 @@ export class YoutubeAPI3 {
     }
 
     // fast alternative to gapi request that is real async
-    async apiFast(endpoint: string, parameters: { [key: string]: any }) {
+    async apiFast(endpoint: string, parameters: { [key: string]: any }): Promise<any> {
         parameters.key = key;
         parameters.prettyPrint = false;
         let url: string = `https://www.googleapis.com/youtube/v3/${endpoint}${this.jsonToQueryString(
             parameters
         )}`;
         //console.log(url)
-        const resp: string = await this.getContent(url);
+        let resp: string = ""
+        try {
+            resp = await this.getContent(url); 
+        } catch(e) {
+            console.log("retrying")
+            return await this.apiFast(endpoint, parameters)
+        }
         //console.log(resp)
         const returnv = JSON.parse(resp);
         const final = {
@@ -183,7 +189,7 @@ export class YoutubeAPI3 {
                 throw "Error requesting";
             } else {
                 if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {
-                    this.snooze(1000).then(() => {
+                    this.snooze(pageflag ? 1000 : 0).then(() => {
                         if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
                             this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
                         } else {
