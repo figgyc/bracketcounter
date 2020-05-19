@@ -48,7 +48,11 @@ function init() {
         colors[contestant] = config.contestants[contestant][1]
     }
 
-
+    socket.addEventListener('error', function(event) {
+        console.log(event)
+        statusElement.textContent = "Bracketcounter is currently unavaliable. This is probably because the voting period for the last video is done. Please come back when a new video is released!"
+        statusElement.style.color = "yellow"
+    })
 
     // Listen for messages
     socket.addEventListener('message', function(event) {
