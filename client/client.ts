@@ -146,7 +146,8 @@ Avg Votes Per Char  ${status.validVotes / 8}
                 top: 0,
                 width: '100%',
                 height: '100%'
-            }
+            },
+            fontName: 'Roboto'
         });
     });
 }
