@@ -38,7 +38,14 @@ function init() {
 
 
     // Create WebSocket connection.
-    const socket = new WebSocket('wss://'+ window.location.hostname +'/socket');
+    let socket: WebSocket | null = null;
+    try {
+    socket = new WebSocket('wss://'+ window.location.hostname +'/socket');
+    } catch(e) {
+        console.log(event)
+        statusElement.textContent = "Bracketcounter is currently unavaliable. This is probably because the voting period for the last video is done. Please come back when a new video is released!"
+        statusElement.style.color = "yellow"
+    }
 
     let translations: { [contestant: string]: string } = {};
     let colors: { [contestant: string]: string } = {};
@@ -48,14 +55,14 @@ function init() {
         colors[contestant] = config.contestants[contestant][1]
     }
 
-    socket.addEventListener('error', function(event) {
+    socket!.addEventListener('error', function(event) {
         console.log(event)
         statusElement.textContent = "Bracketcounter is currently unavaliable. This is probably because the voting period for the last video is done. Please come back when a new video is released!"
         statusElement.style.color = "yellow"
     })
 
     // Listen for messages
-    socket.addEventListener('message', function(event) {
+    socket!.addEventListener('message', function(event) {
         let ob = JSON.parse(event.data);
         let status = ob.status;
         // document.body.style.background = `linear-gradient(rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 100%), url(https://i.ytimg.com/vi/${status.id}/maxresdefault.jpg)`;
