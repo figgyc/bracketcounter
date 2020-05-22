@@ -129,12 +129,12 @@ Avg Votes Per Char  ${status.validVotes / 8}
                 position: 'none'
             },
             axisTitlesPosition: 'none',
-            /* accurate bar widths
+            // accurate bar widths
             hAxis: {
                 viewWindow: {
-                    max: status.validVotes
+                    max: status.validVotes / 4
                 }
-            },*/
+            },
             vAxis: {
                 //textPosition: 'none'
             },
