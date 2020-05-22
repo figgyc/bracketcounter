@@ -1,12 +1,12 @@
 export namespace config {
-    export const id: string = "8HATkU_F0iE";
+    export const id: string = "1YwDVqaszdU";
     export const countMultiVoters: boolean = false;
     export const deadlineHours: number = 48; // only count comments up to this time after the video
     export const refreshTime: number = 90; // amount of seconds to wait between runs of the background task and page refresh
     export const re: RegExp = /\[(.)\]/g; // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
     // this object moderates who is a real contestant.
     export const contestants: { [contestant: string]: [string, string] } = { // color, name
-        /* 4cteam
+        /* 4cteam */
         //a: ["Balloony", "#02be81"], bfb18 gone
         a: ["Bubble", "#86edfe"],
         b: ["Gelatin", "#12d70d"],
@@ -14,7 +14,7 @@ export namespace config {
         d: ["Lollipop", "#b669f3"],
         e: ["Ruby", "#fd1850"],
         f: ["Teardrop", "#1fbce9"] // */
-        /* xcteam */
+        /* xcteam 
         a: ["Blocky", "#f42628"],
         b: ["Firey", "#ffa901"],
         c: ["Flower", "#ff72ff"],
