@@ -136,7 +136,7 @@ Avg Votes Per Char  ${status.validVotes / 8}
                 }
             },
             vAxis: {
-                //textPosition: 'none'
+                textPosition: 'in'
             },
             bar: {
                 groupWidth: '100%'
