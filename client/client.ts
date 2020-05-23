@@ -117,8 +117,8 @@ Multi Voters        ${status.multiVoters}
 /************************/
 Avg Votes Per Char  ${status.validVotes / 8}
 #1st-#2nd Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[1]]} [${(ob.votes[sortedKeys[1]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
-#6th-#7th Margin    ${ob.votes[sortedKeys[5]] - ob.votes[sortedKeys[6]]} [${(ob.votes[sortedKeys[6]] / ob.votes[sortedKeys[5]] * 100).toFixed(1)}%]
-#1st-#7th Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[6]]} [${(ob.votes[sortedKeys[6]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
+#${sortedKeys.length-1}th-#${sortedKeys.length}th Margin    ${ob.votes[sortedKeys[sortedKeys.length-2]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[sortedKeys.length-2]] * 100).toFixed(1)}%]
+#1st-#${sortedKeys.length}th Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
 \`\`\``;
         postableElement.textContent = discordPostable;
         wikiaElement.textContent = wikiaPostable;
