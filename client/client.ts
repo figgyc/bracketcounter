@@ -133,7 +133,8 @@ Avg Votes Per Char  ${status.validVotes / 8}
             hAxis: {
                 viewWindow: {
                     max: status.validVotes / 4
-                }
+                },
+                textPosition: 'in'
             },
             vAxis: {
                 textPosition: 'none'
