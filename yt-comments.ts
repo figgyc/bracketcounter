@@ -53,6 +53,7 @@ for (let contestant in config.contestants) {
 }
 
 let votes: { [contestant: string]: number } = Object.assign({}, initVotes); // vote count: {"A": 1, "B": 2, ...}
+let entries: any = []; // complete data logging
 let validVotes: number = 0; // votes for a-h and not random stuff.
 let votingUsers: number[] = []; // array of channel ids who have already voted, prevent dupes
 let comments: number = 0; // number of comments processed for progress tracking
@@ -144,7 +145,7 @@ async function checkFinished() {
 // process entries and totals up vote count and other stuff
 async function processEntry(entry: any) {
 	if (config.blacklist.includes(entry.userId)) return // data compliance
-	//console.log(entry)
+	entries.push(entry);
 	if (!commentIds.hasOwnProperty(entry.id) || commentIds[entry.id] != entry.date) {
 		comments++;
 		//	if (+entry.date < +deadline) {
@@ -210,6 +211,7 @@ process.on('SIGINT', function () {
 		comments: comments,
 		validVotes: validVotes,
 		finalVotes: finalVotes,
+                entries: entries
 	}
 	fs.writeFileSync("savestate.json", JSON.stringify(savestate));
 	process.exit();
