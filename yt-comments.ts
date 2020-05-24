@@ -29,7 +29,8 @@ wss.on('connection', function connection(ws) {
 			wrongVoters: wrongVoters,
 			multiVoters: multiVoters,
 			updateDate: updateDate,
-			clients: wss.clients.size
+			clients: wss.clients.size,
+                        done: probablyDone,
 		},
 		votes: finalVotes,
 		total: validVotes
@@ -129,7 +130,8 @@ async function checkFinished() {
 			wrongVoters: wrongVoters,
 			multiVoters: multiVoters,
 			updateDate: updateDate,
-			clients: wss.clients.size
+			clients: wss.clients.size,
+                        done: probablyDone,
 		},
 		votes: finalVotes,
 		total: validVotes

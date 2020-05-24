@@ -108,7 +108,7 @@ function init() {
         let hoursLeft = Math.floor(minutesLeft / 60);
         let onlyMinsLeft = Math.floor(minutesLeft % 60);
         let secsLeft = Math.floor(((minutesLeft % 60) * 60) % 60);
-        let statusString = `Video ID: ${status.id} Comments read: ${status.comments} (${(status.comments / status.totalComments * 100).toFixed(1)}%) Votes: ${status.validVotes} Last update: ${updateDate.toLocaleTimeString()} (${hoursLeft}h ${onlyMinsLeft}m ${secsLeft}s left)`;
+        let statusString = `${status.done ? "" : "RECOUNT IN PROGRESS, PLEASE WAIT"} Video ID: ${status.id} Comments read: ${status.comments} (${(status.comments / status.totalComments * 100).toFixed(1)}%) Votes: ${status.validVotes} Last update: ${updateDate.toLocaleTimeString()} (${hoursLeft}h ${onlyMinsLeft}m ${secsLeft}s left)`;
         statusElement.innerText = statusString;
         discordPostable += `/************************/
 Comments            ${status.comments}
