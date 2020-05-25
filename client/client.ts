@@ -108,14 +108,14 @@ function init() {
         let hoursLeft = Math.floor(minutesLeft / 60);
         let onlyMinsLeft = Math.floor(minutesLeft % 60);
         let secsLeft = Math.floor(((minutesLeft % 60) * 60) % 60);
-        let statusString = `${status.done ? "" : "RECOUNT IN PROGRESS, PLEASE WAIT"} Video ID: ${status.id} Comments read: ${status.comments} (${(status.comments / status.totalComments * 100).toFixed(1)}%) Votes: ${status.validVotes} Last update: ${updateDate.toLocaleTimeString()} (${hoursLeft}h ${onlyMinsLeft}m ${secsLeft}s left)`;
+        let statusString = `${status.done ? "" : "🕒RECOUNT IN PROGRESS, PLEASE WAIT🕒"} Video ID: ${status.id} Comments read: ${status.comments} (${(status.comments / status.totalComments * 100).toFixed(1)}%) Votes: ${status.validVotes} Last update: ${updateDate.toLocaleTimeString()} (${hoursLeft}h ${onlyMinsLeft}m ${secsLeft}s left)`;
         statusElement.innerText = statusString;
         discordPostable += `/************************/
 Comments            ${status.comments}
 Votes               ${status.validVotes}
 Multi Voters        ${status.multiVoters}
 /************************/
-Avg Votes Per Char  ${status.validVotes / 8}
+Avg Votes Per Char  ${status.validVotes / sortedKeys.length}
 #1st-#2nd Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[1]]} [${(ob.votes[sortedKeys[1]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
 #${sortedKeys.length-1}th-#${sortedKeys.length}th Margin    ${ob.votes[sortedKeys[sortedKeys.length-2]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[sortedKeys.length-2]] * 100).toFixed(1)}%]
 #1st-#${sortedKeys.length}th Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
