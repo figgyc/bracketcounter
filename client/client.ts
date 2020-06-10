@@ -30,7 +30,7 @@ function numberWithCommas(x: number) {
 
 let customTicks: number[] = []
 for (let i = 0; i < 20; i++) {
-    customTicks.push(2763*i);
+    customTicks.push(921*i);
 }
 
 function init() {
