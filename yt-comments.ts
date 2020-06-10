@@ -105,6 +105,7 @@ async function checkFinished() {
 			api.loadComments(config.id, "published", undefined, true, true);
 		}, config.refreshTime * 1000);
 		setInterval(() => {
+			save()
 			if (probablyDone)
 				api.loadComments(config.id, "published", undefined);
 		}, config.longRefreshTime * 1000);
@@ -197,6 +198,11 @@ async function processEntry(entry: any) {
 
 process.on('SIGINT', function () {
 	console.log("Caught interrupt signal");
+	save();
+	process.exit();
+});
+
+function save() {
 	let savestate = {
 		commentIds: commentIds,
 		multiVoters: multiVoters,
@@ -214,8 +220,7 @@ process.on('SIGINT', function () {
                 entries: entries
 	}
 	fs.writeFileSync("savestate.json", JSON.stringify(savestate));
-	process.exit();
-});
+}
 
 function go() {
 	comments = 0;

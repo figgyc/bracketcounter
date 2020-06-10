@@ -135,7 +135,10 @@ Avg Votes Per Char  ${status.validVotes / sortedKeys.length}
                     max: status.validVotes / 4,
                     min: 0
                 },
-                textPosition: 'in'
+                textPosition: 'in',
+                gridlines: ({
+                    minSpacing: 2763
+                } as any)
             },
             vAxis: {
                 textPosition: 'none'
