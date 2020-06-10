@@ -29,8 +29,8 @@ function numberWithCommas(x: number) {
 }
 
 let customTicks: number[] = []
-for (let i = 0; i < 20; i++) {
-    customTicks.push(921*i);
+for (let i = 0; i < 60; i++) {
+    customTicks.push(307*i);
 }
 
 function init() {
