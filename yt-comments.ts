@@ -107,7 +107,7 @@ async function checkFinished() {
 		setInterval(() => {
 			if (probablyDone)
 				api.loadComments(config.id, "published", undefined);
-		}, config.refreshTime * 120 * 1000);
+		}, config.longRefreshTime * 1000);
 	}
 	finalVotes = {};
 	for (let letter in config.contestants) {
