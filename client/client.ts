@@ -28,6 +28,11 @@ function numberWithCommas(x: number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+let customTicks: number[] = []
+for (let i = 0; i < 20; i++) {
+    customTicks.push(2763*i);
+}
+
 function init() {
     if (initialized) return
     initialized = true // dont run twice
@@ -136,9 +141,7 @@ Avg Votes Per Char  ${status.validVotes / sortedKeys.length}
                     min: 0
                 },
                 textPosition: 'in',
-                gridlines: ({
-                    minSpacing: 2763
-                } as any)
+                ticks: customTicks
             },
             vAxis: {
                 textPosition: 'none'
