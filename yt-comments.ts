@@ -217,7 +217,7 @@ function save() {
 		comments: comments,
 		validVotes: validVotes,
 		finalVotes: finalVotes,
-                entries: entries
+        entries: entries
 	}
 	fs.writeFileSync("savestate.json", JSON.stringify(savestate));
 }
