@@ -71,7 +71,7 @@ function init() {
         let ob = JSON.parse(event.data);
         let status = ob.status;
         // document.body.style.background = `linear-gradient(rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 100%), url(https://i.ytimg.com/vi/${status.id}/maxresdefault.jpg)`;
-        let discordPostable = '**Unconfirmed** results:\nRemember it is **vote to save** so the character with the **least** votes is eliminated!\n```css\n';
+        let discordPostable = '```css\n';
         let wikiaPostable = `{| class="article-table mw-collapsible mw-collapsed" data-expandtext="Show votes" data-collapsetext="Hide votes"
 !Icon
 !Contestant
