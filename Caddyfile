@@ -1,6 +1,8 @@
 (settings) {
     encode gzip
-    log stdout
+    log {
+        output stdout
+    }
     file_server {
         hide ssl.pem ssl.key key.ts key.js.map key.js
     }
