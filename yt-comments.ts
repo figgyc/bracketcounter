@@ -30,7 +30,7 @@ wss.on('connection', function connection(ws) {
 			multiVoters: multiVoters,
 			updateDate: updateDate,
 			clients: wss.clients.size,
-                        done: probablyDone,
+            done: probablyDone,
 		},
 		votes: finalVotes,
 		total: validVotes
@@ -97,7 +97,7 @@ function setDone() {
 // output results (used to only do when done, thus name)
 async function checkFinished() {
 	//if (!probablyDone) return;
-	if (!runningPostTask) {
+	if (!runningPostTask && probablyDone) {
 		runningPostTask = true;
 		setInterval(() => {
 			console.log("refresh")
@@ -133,12 +133,12 @@ async function checkFinished() {
 			multiVoters: multiVoters,
 			updateDate: updateDate,
 			clients: wss.clients.size,
-                        done: probablyDone,
+            done: probablyDone,
 		},
 		votes: finalVotes,
 		total: validVotes
 	};
-	if (comments > 60000 || totalComments * 0.95 <= comments) probablyDone = true
+	//if (totalComments * 0.9 <= comments) probablyDone = true
 	broadcast(JSON.stringify(bcObject));
 	//console.log(multiVoterList);
 }
