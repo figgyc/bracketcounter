@@ -176,7 +176,7 @@ export class YoutubeAPI3 {
         this.apiFast("commentThreads", {
             part: "snippet,replies",
             fields:
-                "items(id,snippet(topLevelComment,totalReplyCount),replies),nextPageToken,pageInfo(totalResults)",
+                "items(id,snippet(topLevelComment,totalReplyCount),replies),nextPageToken",
             videoId: id,
             moderationStatus: modStatus,
             textFormat: "plainText",
@@ -188,26 +188,26 @@ export class YoutubeAPI3 {
             if (obj.error) {
                 throw "Error requesting";
             } else {
-                if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {
-                    this.snooze(pageflag ? 1000 : 0).then(() => {
+                if (!pageflag) {
+                    if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
+                        this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
+                    } else {
+                        this.setDone();
+                        console.log("refresh done");
+                    }
+                }
+                async.each(obj.items, (item: object) => {
+                    this.noteItem(item);
+                }).then(() => {
+                    if (pageflag) { // do after processing to check ids and see if we have got to the end
                         if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
                             this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
                         } else {
                             this.setDone();
                             console.log("refresh done");
                         }
-                    })
-                } else {
-                    this.setDone();
-                    console.log("refresh done");
-                }
-                if (obj.pageInfo) {
-                    //this.setTotalComments(obj.pageInfo.totalResults) broken?
-                    //console.log(obj.pageInfo)
-                }
-                async.each(obj.items, (item: object) => {
-                    this.noteItem(item);
-                });
+                    }
+                })
             }
             this.checkFinished();
         }, console.log);
