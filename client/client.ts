@@ -137,7 +137,7 @@ Avg Votes Per Char  ${status.validVotes / sortedKeys.length}
             // accurate bar widths
             hAxis: {
                 viewWindow: {
-                    max: status.validVotes / 4,
+                    max: ob.votes[sortedKeys[0]] * 1.3,
                     min: 0
                 },
                 textPosition: 'in',

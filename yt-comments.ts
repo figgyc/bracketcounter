@@ -18,23 +18,7 @@ function broadcast(data: string) {
 };
 
 wss.on('connection', function connection(ws) {
-	ws.send(JSON.stringify({
-		status: {
-			deadline: +deadline,
-			id: config.id,
-			comments: comments,
-			totalComments: totalComments,
-			runningPostTask: runningPostTask,
-			validVotes: validVotes,
-			wrongVoters: wrongVoters,
-			multiVoters: multiVoters,
-			updateDate: updateDate,
-			clients: wss.clients.size,
-            done: probablyDone,
-		},
-		votes: finalVotes,
-		total: validVotes
-	}));
+	ws.send(JSON.stringify(currentMessage));
 	ws.on('error', () => console.log('errored'));
 });
 
@@ -65,7 +49,7 @@ let multiVoterList: { [voterName: string]: number } = {}; // list and numbers of
 let probablyDone: boolean = false; // rough estimate if we are done or not. based on if there is a next page
 let runningPostTask: boolean = false;
 let finalVotes: { [contestant: string]: number } = {}; // for fancy display of votes at the end. only used for filtering atm
-
+let currentMessage: any = {};
 // static things
 const wrongRegexes: RegExp[] = [/\{(.)\}/, /\((.)\)/, /\<(.)\>/]; //, / (.) /, /(.) /]; // regexes to detect people who voted with the wrong brackets. TODO: remove? isnt really necessary
 const modStatuses: string[] = ["published"]; //, "heldForReview", "likelySpam"]; only on your own videos with authentication, todo: add authentication?
@@ -100,13 +84,16 @@ async function checkFinished() {
 	if (!runningPostTask && probablyDone) {
 		runningPostTask = true;
 		setInterval(() => {
-			console.log("refresh")
-			api.paged = false
-			api.loadComments(config.id, "published", undefined, true, true);
+			if (probablyDone) {
+				console.log("refresh")
+				api.paged = false
+				api.loadComments(config.id, "published", undefined, true, true);
+			}
 		}, config.refreshTime * 1000);
 		setInterval(() => {
 			save()
 			if (probablyDone)
+				reset()
 				api.loadComments(config.id, "published", undefined);
 		}, config.longRefreshTime * 1000);
 	}
@@ -121,25 +108,27 @@ async function checkFinished() {
 
 	updateDate = Date.now();
 
-	let bcObject: any = {
-		status: {
-			deadline: +deadline,
-			id: config.id,
-			comments: comments,
-			totalComments: totalComments,
-			runningPostTask: runningPostTask,
-			validVotes: validVotes,
-			wrongVoters: wrongVoters,
-			multiVoters: multiVoters,
-			updateDate: updateDate,
-			clients: wss.clients.size,
-            done: probablyDone,
-		},
-		votes: finalVotes,
-		total: validVotes
-	};
+	if (probablyDone) {
+		currentMessage = {
+			status: {
+				deadline: +deadline,
+				id: config.id,
+				comments: comments,
+				totalComments: totalComments,
+				runningPostTask: runningPostTask,
+				validVotes: validVotes,
+				wrongVoters: wrongVoters,
+				multiVoters: multiVoters,
+				updateDate: updateDate,
+				clients: wss.clients.size,
+				done: probablyDone,
+			},
+			votes: finalVotes,
+			total: validVotes
+		}
+	}
 	//if (totalComments * 0.9 <= comments) probablyDone = true
-	broadcast(JSON.stringify(bcObject));
+	broadcast(JSON.stringify(currentMessage));
 	//console.log(multiVoterList);
 }
 
@@ -220,6 +209,24 @@ function save() {
         entries: entries
 	}
 	fs.writeFileSync("savestate.json", JSON.stringify(savestate));
+}
+
+function reset() {
+	commentIds = {}
+	multiVoters = 0
+	multiVoterList = {}
+	votingUsers = []
+	votes = Object.assign({}, initVotes);
+	wrongVoters = 0
+	commentIds = {}
+	runningPostTask = false
+	totalComments = 0
+	comments = 0
+	validVotes = 0
+	finalVotes = {}
+	entries = {}
+	probablyDone = false
+	currentMessage.status.done = false
 }
 
 function go() {
