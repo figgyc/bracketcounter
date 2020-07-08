@@ -37,7 +37,7 @@ for (let contestant in config.contestants) {
 }
 
 let votes: { [contestant: string]: number } = Object.assign({}, initVotes); // vote count: {"A": 1, "B": 2, ...}
-let entries: any = []; // complete data logging
+let entries: any[] = []; // complete data logging
 let validVotes: number = 0; // votes for a-h and not random stuff.
 let votingUsers: number[] = []; // array of channel ids who have already voted, prevent dupes
 let comments: number = 0; // number of comments processed for progress tracking
@@ -220,11 +220,10 @@ function reset() {
 	wrongVoters = 0
 	commentIds = {}
 	runningPostTask = false
-	totalComments = 0
 	comments = 0
 	validVotes = 0
 	finalVotes = {}
-	entries = {}
+	entries = []
 	probablyDone = false
 	currentMessage.status.done = false
 }
@@ -267,19 +266,15 @@ if (fs.existsSync("savestate.json")) {
 		votingUsers = savestate.votingUsers
 		votes = savestate.votes
 		wrongVoters = savestate.wrongVoters
-		runningPostTask = savestate.runningPostTask
+		entries = savestate.entries
+		runningPostTask = false
 		deadline = savestate.deadline
 		totalComments = savestate.totalComments
 		comments = savestate.comments
 		validVotes = savestate.validVotes
+		probablyDone = true
 		finalVotes = savestate.finalVotes
-
-		if (runningPostTask) {
-			runningPostTask = false
-			checkFinished()
-		} else {
-			console.log("Last dataset was incomplete, delete file and restart")
-		}
+		checkFinished()
 	} else {
 		console.log("Wrong video")
 		go()
