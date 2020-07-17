@@ -138,8 +138,8 @@ async function processEntry(entry: any) {
 	entries.push(entry);
 	if (!commentIds.hasOwnProperty(entry.id) || commentIds[entry.id] != entry.date) {
 		comments++;
-		//	if (+entry.date < +deadline) {
-		if (1) {
+		if (+entry.date < +deadline) {
+		//if (1) {
 			allMatches(entry.content, config.re).then((matches: RegExpMatchArray) => {
 
 				if (matches.length > 0) {
