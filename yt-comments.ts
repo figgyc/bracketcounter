@@ -6,23 +6,29 @@ const api = new YoutubeAPI3(checkFinished, processEntry, setDone, setTotalCommen
 
 require('console-stamp')(console, []);
 
-let wss = new WebSocket.Server({ port: 8080 });
+let wss: WebSocket.Server | undefined = undefined
 
+if (config.liveMode) {
+	let wss = new WebSocket.Server({ port: 8080 });
+
+	wss.on('connection', function connection(ws) {
+		ws.send(JSON.stringify(currentMessage));
+		ws.on('error', () => console.log('errored'));
+	});
+
+	wss.on('error', () => console.log('errored'));
+}
 // Broadcast to all.
 function broadcast(data: string) {
-	wss.clients.forEach(function each(client) {
-		if (client.readyState === WebSocket.OPEN) {
-			client.send(data);
-		}
-	});
+	if (wss != undefined) {
+		wss.clients.forEach(function each(client) {
+			if (client.readyState === WebSocket.OPEN) {
+				client.send(data);
+			}
+		});
+	}
 };
 
-wss.on('connection', function connection(ws) {
-	ws.send(JSON.stringify(currentMessage));
-	ws.on('error', () => console.log('errored'));
-});
-
-wss.on('error', () => console.log('errored'));
 
 
 function setTotalComments(ttotalComments: number) {
@@ -120,7 +126,7 @@ async function checkFinished() {
 				wrongVoters: wrongVoters,
 				multiVoters: multiVoters,
 				updateDate: updateDate,
-				clients: wss.clients.size,
+				clients: (wss != undefined) ? wss.clients.size: 0,
 				done: probablyDone,
 			},
 			votes: finalVotes,
@@ -179,7 +185,7 @@ async function processEntry(entry: any) {
 		commentIds[entry.id] = entry.date;
 	} else {
 		// dupe comment found, probably done paging
-		if (!entry.isReply) {
+		if (commentIds.hasOwnProperty(entry.id) && !entry.isReply) {
 			api.paged = true
 		}
 	}

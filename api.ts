@@ -48,29 +48,31 @@ export class YoutubeAPI3 {
         return new Promise<string>((resolve, reject) => {
             // select http or https module, depending on reqested url
             const request = https.get(url, (response: IncomingMessage) => {
-                // handle http errors
-                if (
-                    response.statusCode &&
-                    (response.statusCode < 200 || response.statusCode > 299)
-                ) {
-                    if (response.statusCode == 403) {
-                        console.log("403, quota out?");
-                    }
-                    reject(
-                        new Error(
-                            "Failed to load page, status code: "
-                            + url
-                            + response.statusMessage
-                            // + util.inspect(response)
-                        )
-                    );
-                }
                 // temporary data holder
                 const body: String[] = [];
                 // on every content chunk, push it to the data array
                 response.on("data", (chunk: String) => body.push(chunk));
                 // we are done, resolve promise with those joined chunks
-                response.on("end", () => { resolve(body.join("")) });
+                response.on("end", () => {
+                    // handle http errors
+                    if (
+                        response.statusCode &&
+                        (response.statusCode < 200 || response.statusCode > 299)
+                    ) {
+                        reject(
+                            
+                            new Error(
+                                "Failed to load page, status code: "
+                                + url
+                                + response.statusMessage
+                                + " " + body.join("")
+                                // + util.inspect(response)
+                            )
+                        );
+                    } else {
+                        resolve(body.join("")) 
+                    }
+                });
             });
             // handle connection errors of the request
             request.on("error", err => reject(err));
@@ -86,11 +88,18 @@ export class YoutubeAPI3 {
         )}`;
         //console.log(url)
         let resp: string = ""
+        let n = 0
         try {
             resp = await this.getContent(url); 
         } catch(e) {
-            console.log("retrying")
-            return await this.apiFast(endpoint, parameters)
+            console.log("retrying", e)
+            n ++
+            if (n < 10) {
+                return await this.apiFast(endpoint, parameters)
+            } else {
+                console.log("Too many retries, giving up")
+                process.exit();
+            }
         }
         //console.log(resp)
         const returnv = JSON.parse(resp);
@@ -188,25 +197,18 @@ export class YoutubeAPI3 {
             if (obj.error) {
                 throw "Error requesting";
             } else {
-                if (!pageflag) {
+                async.each(obj.items, (item: object, callback: Function) => {
+                    this.noteItem(item);
+                    callback()
+                }, (err) => {
+                    console.log(err)
                     if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
                         this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
                     } else {
                         this.setDone();
                         console.log("refresh done");
                     }
-                }
-                async.each(obj.items, (item: object) => {
-                    this.noteItem(item);
-                }).then(() => {
-                    if (pageflag) { // do after processing to check ids and see if we have got to the end
-                        if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
-                            this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
-                        } else {
-                            this.setDone();
-                            console.log("refresh done");
-                        }
-                    }
+                
                 })
             }
             this.checkFinished();
