@@ -92,6 +92,7 @@ async function checkFinished() {
 		setInterval(() => {
 			if (probablyDone) {
 				console.log("refresh")
+				probablyDone = false
 				api.paged = false
 				api.loadComments(config.id, "published", undefined, true, true);
 			}
