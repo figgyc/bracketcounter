@@ -9,7 +9,7 @@ require('console-stamp')(console, []);
 let wss: WebSocket.Server | undefined = undefined
 
 if (config.liveMode) {
-	let wss = new WebSocket.Server({ port: 8080 });
+	wss = new WebSocket.Server({ port: 8080 });
 
 	wss.on('connection', function connection(ws) {
 		ws.send(JSON.stringify(currentMessage));
@@ -92,7 +92,7 @@ async function checkFinished() {
 		setInterval(() => {
 			if (probablyDone) {
 				console.log("refresh")
-				probablyDone = false
+				//probablyDone = false // change this if things go wrong
 				api.paged = false
 				api.loadComments(config.id, "published", undefined, true, true);
 			}

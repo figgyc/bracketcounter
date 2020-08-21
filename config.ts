@@ -1,5 +1,5 @@
 export namespace config {
-    export const id: string = "wluh0U2wZuY";
+    export const id: string = "UUwZw_y6kpQ";
     export const liveMode: boolean = true; // disable websockets systems
     export const countMultiVoters: boolean = false;
     export const deadlineHours: number = 48; // only count comments up to this time after the video
@@ -10,20 +10,20 @@ export namespace config {
     export const contestants: { [contestant: string]: [string, string] } = { // color, name
         // 4cteam 
         //a: ["Balloony", "#02be81"], bfb18 gone
-        a: ["Bubble", "#86edfe"],
-        b: ["Gelatin", "#12d70d"],
-        c: ["Leafy", "#70f31c"],
-        d: ["Lollipop", "#b669f3"],
+        //a: ["Bubble", "#86edfe"], bfb22 gone
+        //b: ["Gelatin", "#12d70d"],
+        //c: ["Leafy", "#70f31c"],
+        //d: ["Lollipop", "#b669f3"],
         //e: ["Ruby", "#fd1850"], bfb20 gone
-        e: ["Teardrop", "#1fbce9"] //
+        //e: ["Teardrop", "#1fbce9"] //
         // xcteam 
-        //a: ["Blocky", "#f42628"],
-        //b: ["Firey", "#ffa901"],
-        //c: ["Flower", "#ff72ff"],
+        a: ["Blocky", "#f42628"],
+        b: ["Firey", "#ffa901"],
+        c: ["Flower", "#ff72ff"],
         //d: ["Loser", "#ffe286"], bfb21 gone
         //e: ["Spongy", "#f3d600"], bfb19 gone
         //d: ["Taco", "#f9d599"],
-        //e: ["Woody", "#f3a656"], // */
+        d: ["Woody", "#f3a656"], // */
 
     }; // template object to ensure ordering is correct
 
