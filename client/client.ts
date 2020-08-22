@@ -28,6 +28,10 @@ function numberWithCommas(x: number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function ordinal(d: number): string {
+return d+(31==d||21==d||1==d?"st":22==d||2==d?"nd":23==d||3==d?"rd":"th")
+}
+
 let customTicks: number[] = []
 for (let i = 0; i < 60; i++) {
     customTicks.push(921*i);
@@ -122,8 +126,8 @@ Multi Voters        ${status.multiVoters}
 /************************/
 Avg Votes Per Char  ${status.validVotes / sortedKeys.length}
 #1st-#2nd Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[1]]} [${(ob.votes[sortedKeys[1]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
-#${sortedKeys.length-1}th-#${sortedKeys.length}th Margin    ${ob.votes[sortedKeys[sortedKeys.length-2]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[sortedKeys.length-2]] * 100).toFixed(1)}%]
-#1st-#${sortedKeys.length}th Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
+#${ordinal(sortedKeys.length-1)}-#${ordinal(sortedKeys.length)} Margin    ${ob.votes[sortedKeys[sortedKeys.length-2]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[sortedKeys.length-2]] * 100).toFixed(1)}%]
+#1st-#${ordinal(sortedKeys.length)}th Margin    ${ob.votes[sortedKeys[0]] - ob.votes[sortedKeys[sortedKeys.length-1]]} [${(ob.votes[sortedKeys[sortedKeys.length-1]] / ob.votes[sortedKeys[0]] * 100).toFixed(1)}%]
 \`\`\``;
         postableElement.textContent = discordPostable;
         wikiaElement.textContent = wikiaPostable;
