@@ -13,10 +13,10 @@ if (config.liveMode) {
 
 	wss.on('connection', function connection(ws) {
 		ws.send(JSON.stringify(currentMessage));
-		ws.on('error', () => console.log('errored'));
+		ws.on('error', () => console.log('websocket error'));
 	});
 
-	wss.on('error', () => console.log('errored'));
+	wss.on('error', () => console.log('websocket error'));
 }
 // Broadcast to all.
 function broadcast(data: string) {

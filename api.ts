@@ -201,7 +201,6 @@ export class YoutubeAPI3 {
                     this.noteItem(item);
                     callback()
                 }, (err) => {
-                    console.log(err)
                     if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
                         this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
                     } else {
