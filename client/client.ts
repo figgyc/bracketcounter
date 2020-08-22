@@ -92,7 +92,7 @@ function init() {
             let percent = (ob.votes[letter] / ob.total * 100).toFixed(10);
             let text = translations[letter] + ": " + ob.votes[letter] + " (" + percent.substring(0,4) + "%)";
             table.push([translations[letter], ob.votes[letter], colors[letter], text]);
-            discordPostable += translations[letter] + ' '.repeat(18 - translations[letter].length) + ob.votes[letter] + ' '.repeat(6 - ob.votes[letter].toString().length) + '[' + percent.substring(0,4) + '%]\n';
+            discordPostable += translations[letter] + ' '.repeat(Math.max(18 - translations[letter].length, 1)) + ob.votes[letter] + ' '.repeat(6 - ob.votes[letter].toString().length) + '[' + percent.substring(0,4) + '%]\n';
             let isGreen = (letter == sortedKeys[0])
             let isRed = (letter == sortedKeys[sortedKeys.length-1])
             let colorPrefix = isGreen ? "{{Color|green|" : (isRed ? "{{Color|red|" : "")

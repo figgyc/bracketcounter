@@ -200,7 +200,7 @@ export class YoutubeAPI3 {
                 async.each(obj.items, (item: object, callback: Function) => {
                     this.noteItem(item);
                     callback()
-                }, (err) => {
+                }, () => {
                     if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
                         this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
                     } else {
