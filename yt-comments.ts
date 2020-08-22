@@ -20,6 +20,7 @@ if (config.liveMode) {
 }
 // Broadcast to all.
 function broadcast(data: string) {
+	console.log(data)
 	if (wss != undefined) {
 		wss.clients.forEach(function each(client) {
 			if (client.readyState === WebSocket.OPEN) {
