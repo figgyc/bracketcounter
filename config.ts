@@ -3,8 +3,8 @@ export namespace config {
     export const liveMode: boolean = true; // disable websockets systems
     export const countMultiVoters: boolean = false;
     export const deadlineHours: number = 48; // only count comments up to this time after the video
-    export const refreshTime: number = 15; // amount of seconds to wait between runs of the background task and page refresh
-    export const longRefreshTime: number = 7200; // amount of seconds to wait between runs of the background task and page refresh 
+    export const refreshTime: number = 45; // amount of seconds to wait between runs of the background task and page refresh
+    export const longRefreshTime: number = 21600; // amount of seconds to wait between runs of the background task and page refresh 
     export const re: RegExp = /\[(.)\]/g; // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
     // this object moderates who is a real contestant.
     export const contestants: { [contestant: string]: [string, string] } = { // color, name

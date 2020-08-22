@@ -10,11 +10,6 @@
     }
 }
 
-bfb.figgyc.uk {
-    import settings
-    tls ssl.pem ssl.key
-}
-
 localhost {
     import settings
 }

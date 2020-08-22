@@ -2,9 +2,13 @@
 Thing that counts things like [X] in the comments of YouTube videos.
 
 ## How to use
+Setup:
 1. Copy `key.example.ts` to `key.ts` and fill in your API key. Don't share it!
-2. Set up a webserver which forwards the websocket port 8080 to /socket. I use Caddy and the config file is included here.
-3. Modify `config.ts` to point to the video ID and contestants you need.
-3. `npm install`. `npm i -g typescript`.
-4. `tsc; cd client; tsc; cd ..`
-To run, `node yt-comments.js`.
+2. Set up a webserver which forwards the websocket port 8080 to /socket. I use [Caddy](https://caddyserver.com/download) and an example config file for running it on your own machine is included: just download it, drop into the bracketcounter folder, and type `name-of-caddy-executable run` to start it whenever you run bracketcounter.`
+3. Check that `client/config.ts` is a symlink to the `config.ts` file. If it's not (it probably isn't if you are on Windows or you downloaded bracketcounter as a zip) run `cd client; del config.ts; mklink config.ts ..\config.ts` (Windows, you may need to use an admin prompt) or `ln -s ../config.ts config.ts` (UNIX)
+3. `npm install --dev`. `npm i -g typescript`.
+
+Using it:
+1. Modify `config.ts` to point to the video ID and contestants you need.
+3. `tsc; cd client; tsc; cd ..`
+To run, `node yt-comments.js`. If your webserver is up, then visit it (probably `localhost` in your browser) and the votes will show up whenever it finishes counting.
