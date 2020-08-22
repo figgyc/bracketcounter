@@ -45,19 +45,16 @@ for (let contestant in config.contestants) {
 let votes: { [contestant: string]: number } = Object.assign({}, initVotes); // vote count: {"A": 1, "B": 2, ...}
 let entries: any[] = []; // complete data logging
 let validVotes: number = 0; // votes for a-h and not random stuff.
-let votingUsers: number[] = []; // array of channel ids who have already voted, prevent dupes
+let votingUsers: { [userid: string]: number} = {}; // array of channel ids who have already voted, prevent dupes
 let comments: number = 0; // number of comments processed for progress tracking
 let commentIds: { [commentId: string]: Date } = {}; // comment ids to prevent duplicate counting on the live update
 let totalComments: number = 0; // total number of comments that should be counted according to yt api
-let wrongVoters: number = 0; // people who voted <X> or (X) or {X} or " X "
 let multiVoters: number = 0; // people who commented more than once
-let multiVoterList: { [voterName: string]: number } = {}; // list and numbers of multi voters
 let probablyDone: boolean = false; // rough estimate if we are done or not. based on if there is a next page
 let runningPostTask: boolean = false;
 let finalVotes: { [contestant: string]: number } = {}; // for fancy display of votes at the end. only used for filtering atm
 let currentMessage: any = {};
 // static things
-const wrongRegexes: RegExp[] = [/\{(.)\}/, /\((.)\)/, /\<(.)\>/]; //, / (.) /, /(.) /]; // regexes to detect people who voted with the wrong brackets. TODO: remove? isnt really necessary
 const modStatuses: string[] = ["published"]; //, "heldForReview", "likelySpam"]; only on your own videos with authentication, todo: add authentication?
 
 // set on start 'config' things
@@ -124,7 +121,6 @@ async function checkFinished() {
 				totalComments: totalComments,
 				runningPostTask: runningPostTask,
 				validVotes: validVotes,
-				wrongVoters: wrongVoters,
 				multiVoters: multiVoters,
 				updateDate: updateDate,
 				clients: (wss != undefined) ? wss.clients.size: 0,
@@ -136,7 +132,6 @@ async function checkFinished() {
 	}
 	//if (totalComments * 0.9 <= comments) probablyDone = true
 	broadcast(JSON.stringify(currentMessage));
-	//console.log(multiVoterList);
 }
 
 // process entries and totals up vote count and other stuff
@@ -148,36 +143,26 @@ async function processEntry(entry: any) {
 		if (+entry.date < +deadline) {
 		//if (1) {
 			allMatches(entry.content, config.re).then((matches: RegExpMatchArray) => {
-
 				if (matches.length > 0) {
-					if (matches.length > 2) {
-						multiVoters += matches.length;
-						if (!multiVoterList[entry.userName]) {
-							multiVoterList[entry.userName] = 0;
-						}
-						multiVoterList[entry.userName] += matches.length;
-					}
-					if (
-						config.countMultiVoters ||
-						!votingUsers.includes(entry.userId)
-					) {
-						votingUsers.push(entry.userId);
-						let match = matches[0];
-						//for (let match of matches) {
-						if (!votes[match]) {
-							votes[match] = 0;
-						}
-						votes[match]++;
-						//}
-					} else {
-						multiVoters++;
-					}
-				} else {
-					// stupid?
-					for (let regex of wrongRegexes) {
-						let execution = regex.exec(entry.content);
-						if (execution) {
-							wrongVoters++;
+					for (let match of matches) {
+						if (
+							config.maxMultiVoters == 0 ||
+							votingUsers[entry.userId] < config.maxMultiVoters
+						) {
+							if (votingUsers[entry.userId] == undefined) {
+								votingUsers[entry.userId] = 1;
+							} else {
+								votingUsers[entry.userId] ++;
+							}
+							let match = matches[0];
+							//for (let match of matches) {
+							if (!votes[match]) {
+								votes[match] = 0;
+							}
+							votes[match]++;
+							//}
+						} else {
+							multiVoters++;
 						}
 					}
 				}
@@ -202,10 +187,8 @@ function save() {
 	let savestate = {
 		commentIds: commentIds,
 		multiVoters: multiVoters,
-		multiVoterList: multiVoterList,
 		votingUsers: votingUsers,
 		votes: votes,
-		wrongVoters: wrongVoters,
 		runningPostTask: runningPostTask,
 		deadline: deadline,
 		id: config.id, // check last
@@ -221,10 +204,8 @@ function save() {
 function reset() {
 	commentIds = {}
 	multiVoters = 0
-	multiVoterList = {}
-	votingUsers = []
+	votingUsers = {}
 	votes = Object.assign({}, initVotes);
-	wrongVoters = 0
 	commentIds = {}
 	runningPostTask = false
 	comments = 0
@@ -237,7 +218,7 @@ function reset() {
 
 function go() {
 	comments = 0;
-	votingUsers = [];
+	votingUsers = {};
 	finalVotes = {};
 	probablyDone = false;
 	api.apiFast("videos", {
@@ -269,10 +250,8 @@ if (fs.existsSync("savestate.json")) {
 	if (savestate.id == config.id) {
 		commentIds = savestate.commentIds
 		multiVoters = savestate.multiVoters
-		multiVoterList = savestate.multiVoterList
 		votingUsers = savestate.votingUsers
 		votes = savestate.votes
-		wrongVoters = savestate.wrongVoters
 		entries = savestate.entries
 		runningPostTask = false
 		deadline = savestate.deadline

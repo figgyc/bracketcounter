@@ -77,3 +77,4 @@ savestate.json
 ssl.key
 ssl.pem
 Caddyfile
+config.ts
