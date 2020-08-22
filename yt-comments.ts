@@ -154,7 +154,6 @@ async function processEntry(entry: any) {
 							} else {
 								votingUsers[entry.userId] ++;
 							}
-							let match = matches[0];
 							//for (let match of matches) {
 							if (!votes[match]) {
 								votes[match] = 0;
