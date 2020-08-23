@@ -147,7 +147,7 @@ async function processEntry(entry: any) {
 				if (matches.length > 0) {
 					for (let match of matches) {
 						if (
-							config.maxMultiVoters == 0 ||
+							config.maxMultiVoters == 0 || votingUsers[entry.userId] == undefined ||
 							votingUsers[entry.userId] < config.maxMultiVoters
 						) {
 							if (votingUsers[entry.userId] == undefined) {
