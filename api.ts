@@ -96,7 +96,8 @@ export class YoutubeAPI3 {
             if (n < 10) {
                 return await this.apiFast(endpoint, parameters, n)
             } else {
-                console.log("Too many retries, giving up")
+                console.log("Too many retries, giving up");
+                throw e
                 //process.exit();
             }
         }
