@@ -62,6 +62,10 @@ const modStatuses: string[] = ["published"]; //, "heldForReview", "likelySpam"];
 let deadline: number = Date.now();
 let updateDate: number = Date.now();
 
+let refreshInterval: NodeJS.Timer | null = null;
+let resetInterval: NodeJS.Timer | null = null;
+let refreshN = 0;
+
 // regex helper, get all [x] letters in a comment
 function allMatches(str: string, checker: RegExp): Promise<Array<string>> {
 	return new Promise<Array<string>>(resolve => {
@@ -87,15 +91,19 @@ async function checkFinished() {
 	//if (!probablyDone) return;
 	if (!runningPostTask && probablyDone) {
 		runningPostTask = true;
-		setInterval(() => {
-			if (probablyDone) {
+		refreshInterval = setInterval(() => {
+			if (probablyDone || refreshN >= 10) {
+				refreshN = 0
 				console.log("refresh")
 				//probablyDone = false // change this if things go wrong
 				api.paged = false
 				api.loadComments(config.id, "published", undefined, true, true);
+			} else {
+				refreshN ++
+				console.log("refresh incomplete, check for errors")
 			}
 		}, config.refreshTime * 1000);
-		setInterval(() => {
+		resetInterval = setInterval(() => {
 			save()
 			if (probablyDone)
 				reset()
@@ -214,6 +222,8 @@ function reset() {
 	entries = []
 	probablyDone = false
 	currentMessage.status.done = false
+	if (refreshInterval) clearInterval(refreshInterval)
+	if (resetInterval) clearInterval(resetInterval)
 }
 
 function go() {
