@@ -80,7 +80,7 @@ export class YoutubeAPI3 {
     }
 
     // fast alternative to gapi request that is real async
-    async apiFast(endpoint: string, parameters: { [key: string]: any }): Promise<any> {
+    async apiFast(endpoint: string, parameters: { [key: string]: any }, n = 0): Promise<any> {
         parameters.key = key;
         parameters.prettyPrint = false;
         let url: string = `https://www.googleapis.com/youtube/v3/${endpoint}${this.jsonToQueryString(
@@ -88,17 +88,16 @@ export class YoutubeAPI3 {
         )}`;
         //console.log(url)
         let resp: string = ""
-        let n = 0
         try {
             resp = await this.getContent(url); 
         } catch(e) {
             console.log("retrying", e)
             n ++
             if (n < 10) {
-                return await this.apiFast(endpoint, parameters)
+                return await this.apiFast(endpoint, parameters, n)
             } else {
                 console.log("Too many retries, giving up")
-                process.exit();
+                //process.exit();
             }
         }
         //console.log(resp)
