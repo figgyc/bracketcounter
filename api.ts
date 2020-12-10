@@ -146,9 +146,7 @@ export class YoutubeAPI3 {
                 // console.log("REPLY", reply)
             }
             if (item.replies.comments.length < item.snippet.totalReplyCount) {
-                console.log("reply", item, item.snippet.topLevelComment.snippet.authorChannelId)
                 if (!this.pageflag || (item.snippet.topLevelComment && item.snippet.topLevelComment.snippet.authorChannelId.value != this.uploader)) { // This is to prevent any JNJ pinned comments from disrupting the automatic page limiter since they are always scanned
-                    console.log("getting extra replies", this.pageflag, item.replies.comments.length, item.snippet.totalReplyCount);
                     this.getReplies(item.id) //uses too much api but hey
                 }
             }
