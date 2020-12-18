@@ -6,13 +6,13 @@
   "dependencies": {
     "async": "^3.2.0",
     "console-stamp": "^0.2.9",
-    "node-fetch": "^1.7.3",
+    "domexception": "^2.0.1",
+    "node-fetch": "^3.0.0-beta.9",
     "ps-node": "^0.1.6",
     "ws": "^4.0.0"
   },
   "devDependencies": {
     "@types/google.visualization": "0.0.52",
-    "@types/node-fetch": "^1.6.7",
     "@types/ws": "^4.0.1",
     "@types/async": "^3.2.3",
     "@types/node": "^9.6.55",
