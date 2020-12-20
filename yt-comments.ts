@@ -36,6 +36,11 @@ function setTotalComments(ttotalComments: number) {
 	totalComments = ttotalComments
 }
 
+function scrubKey(config: any): any {
+	config.key = null
+	return config
+}
+
 
 // these are changed by various things
 let initVotes: { [contestant: string]: number } = {}; // vote count: {"A": 1, "B": 2, ...}
@@ -135,6 +140,7 @@ async function checkFinished() {
 				clients: (wss != undefined) ? wss.clients.size: 0,
 				done: probablyDone,
 			},
+			config: scrubKey(config),
 			votes: finalVotes,
 			total: validVotes
 		}
