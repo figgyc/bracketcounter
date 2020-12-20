@@ -1,35 +1,20 @@
+import * as json5 from "json5";
+import * as fs from "fs";
+
+let confObj = json5.parse(fs.readFileSync("config.json5", {encoding: "utf-8"}));
 export namespace config {
-    export const id: string = "UUwZw_y6kpQ";
-    export const liveMode: boolean = true; // disable websockets systems
-    export const maxMultiVoters: number = 1; // the maximum number of votes per person (use 0 for unlimited)
-    export const deadlineHours: number = 48; // only count comments up to this time after the video
-    export const refreshTime: number = 45; // amount of seconds to wait between runs of the background task and page refresh
-    export const longRefreshTime: number = 21600; // amount of seconds to wait between runs of the background task and page refresh 
-    export const re: RegExp = /\[(.)\]/g; // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
+    export const key: string = confObj.key;
+    export const id: string = confObj.id;
+    export const liveMode: boolean = confObj.liveMode; // disable websockets systems
+    export const maxMultiVoters: number = confObj.maxMultiVoters; // the maximum number of votes per person (use 0 for unlimited)
+    export const deadlineHours: number = confObj.deadlineHours; // only count comments up to this time after the video
+    export const refreshTime: number = confObj.refreshTime; // amount of seconds to wait between runs of the background task and page refresh
+    export const longRefreshTime: number = confObj.longRefreshTime; // amount of seconds to wait between runs of the background task and page refresh 
+    export const re: RegExp = new RegExp(confObj.re); // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
     // this object moderates who is a real contestant.
-    export const contestants: { [contestant: string]: [string, string] } = { // color, name
-        // 4cteam 
-        //a: ["Balloony", "#02be81"], bfb18 gone
-        //a: ["Bubble", "#86edfe"], bfb22 gone
-        //b: ["Gelatin", "#12d70d"],
-        //c: ["Leafy", "#70f31c"],
-        //d: ["Lollipop", "#b669f3"],
-        //e: ["Ruby", "#fd1850"], bfb20 gone
-        //e: ["Teardrop", "#1fbce9"] //
-        // xcteam 
-        a: ["Blocky", "#f42628"],
-        b: ["Firey", "#ffa901"],
-        c: ["Flower", "#ff72ff"],
-        //d: ["Loser", "#ffe286"], bfb21 gone
-        //e: ["Spongy", "#f3d600"], bfb19 gone
-        //d: ["Taco", "#f9d599"],
-        d: ["Woody", "#f3a656"], // */
+    export const contestants: { [contestant: string]: [string, string] } = confObj.contestants; // template object to ensure ordering is correct
 
-    }; // template object to ensure ordering is correct
-
-    export const blacklist: string[] = [
-
-    ] // list of user ids who do not want to be counted
+    export const blacklist: string[] = confObj.blacklist; // list of user ids who do not want to be counted
 }
 
 

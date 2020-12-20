@@ -1,6 +1,7 @@
 // google api stuff
 
-import { key } from "./key"
+import { config } from "./config"
+const key = config.key;
 import async from "async";
 import https from "https";
 import { IncomingMessage } from "http";

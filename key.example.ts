@@ -1,1 +1,0 @@
-export const key: string = "AIzaSyxxxxxxxxxxxxxxxxxxxxx"; // replace with your actual api key, get one from https://console.developers.google.com/, dont share it with anyone

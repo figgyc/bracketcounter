@@ -62,14 +62,11 @@ typings/
 
 .tern-port
 *.map
-yt-comments.js
-api.js
+*.js
+
 key.ts
-key.js
-config.js
-client/client.js
-client/config.js 
-client.js
+config.json5
+
 # serving
 caddy2
 latest.png
@@ -77,4 +74,3 @@ savestate.json
 ssl.key
 ssl.pem
 Caddyfile
-config.ts

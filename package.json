@@ -7,15 +7,15 @@
     "async": "^3.2.0",
     "console-stamp": "^0.2.9",
     "domexception": "^2.0.1",
-    "node-fetch": "^3.0.0-beta.9",
-    "ps-node": "^0.1.6",
+    "json5": "^2.1.3",
     "ws": "^4.0.0"
   },
   "devDependencies": {
-    "@types/google.visualization": "0.0.52",
-    "@types/ws": "^4.0.1",
     "@types/async": "^3.2.3",
+    "@types/google.visualization": "0.0.52",
+    "@types/json5": "0.0.30",
     "@types/node": "^9.6.55",
+    "@types/ws": "^4.0.1",
     "typescript": "^3.8.3"
   },
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/figgyc/yt-comments.git"
+    "url": "git+https://github.com/figgyc/bracketcounter.git"
   },
   "keywords": [
     "bfb"
@@ -31,7 +31,7 @@
   "author": "figgyc",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/figgyc/yt-comments/issues"
+    "url": "https://github.com/figgyc/bracketcounter/issues"
   },
-  "homepage": "https://github.com/figgyc/yt-comments#readme"
+  "homepage": "https://github.com/figgyc/bracketcounter#readme"
 }

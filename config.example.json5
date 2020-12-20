@@ -1,13 +1,14 @@
-export namespace config {
-    export const id: string = "mHq89x2z2Lc";
-    export const liveMode: boolean = true; // disable websockets systems
-    export const maxMultiVoters: number = 1; // the maximum number of votes per person (use 0 for unlimited)
-    export const deadlineHours: number = 48; // only count comments up to this time after the video
-    export const refreshTime: number = 15; // amount of seconds to wait between runs of the background task and page refresh
-    export const longRefreshTime: number = 28800; // amount of seconds to wait between runs of the background task and page refresh 
-    export const re: RegExp = /\[(.)\]/g; // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
+{
+    "key": "AIzaSyxxxxxxxxxxxxxxxxxxxxx", // replace with your actual api key, get one from https://console.developers.google.com/, dont share it with anyone
+    "id":  "mHq89x2z2Lc",
+    "liveMode":  true, // disable websockets systems
+    "maxMultiVoters": 1, // the maximum number of votes per person (use 0 for unlimited)
+    "deadlineHours": 48, // only count comments up to this time after the video
+    "refreshTime": 15, // amount of seconds to wait between runs of the background task and page refresh
+    "longRefreshTime": 28800, // amount of seconds to wait between runs of the background task and page refresh 
+    "re": RegExp = "/\[(.)\]/g", // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
     // this object moderates who is a real contestant.
-    export const contestants: { [contestant: string]: [string, string] } = { // color, name
+    "contestants": { [contestant: string]: [string, string] } = { // color, name
         // 4cteam 
         //a: ["Ballony", "#02be81"], bfb18 gone
         //a: ["Bubble", "#86edfe"], bfb22 gone
@@ -19,15 +20,15 @@ export namespace config {
         // xcteam 
         //a: ["Blocky", "#f42628"], bfb24 gone
         //a: ["Firey", "#ffa901"], bfb25 gone
-        a: ["Flower", "#ff72ff"]
+        a: ["Flower", "#ff72ff"],
         //d: ["Loser", "#ffe286"], bfb21 gone
         //e: ["Spongy", "#f3d600"], bfb19 gone
         //d: ["Taco", "#f9d599"], bfb23 gone
         //a: ["Woody", "#f3a656"], // */
 
-    }; // template object to ensure ordering is correct
+    }, // template object to ensure ordering is correct
 
-    export const blacklist: string[] = [
+    "blacklist": [
 
     ] // list of user ids who do not want to be counted
 }
