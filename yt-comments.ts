@@ -212,7 +212,7 @@ function save() {
 		finalVotes: finalVotes,
         entries: entries
 	}
-	fs.writeFileSync("savestate.json", JSON.stringify(savestate));
+	fs.writeFileSync(config.savestateFile, JSON.stringify(savestate));
 }
 
 function reset() {
@@ -259,9 +259,9 @@ function go() {
 	}, console.log);
 }
 
-if (fs.existsSync("savestate.json")) {
+if (fs.existsSync(config.savestateFile)) {
 	console.log("Loading savestate")
-	let savestate = JSON.parse(fs.readFileSync("savestate.json").toString())
+	let savestate = JSON.parse(fs.readFileSync(config.savestateFile).toString())
 	console.log("Loaded")
 	if (savestate.id == config.id) {
 		commentIds = savestate.commentIds

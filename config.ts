@@ -5,6 +5,7 @@ let confObj = json5.parse(fs.readFileSync("config.json5", {encoding: "utf-8"}));
 export namespace config {
     export const key: string = confObj.key;
     export const id: string = confObj.id;
+    export const savestateFile: string = confObj.savestateFile;
     export const liveMode: boolean = confObj.liveMode; // disable websockets systems
     export const maxMultiVoters: number = confObj.maxMultiVoters; // the maximum number of votes per person (use 0 for unlimited)
     export const deadlineHours: number = confObj.deadlineHours; // only count comments up to this time after the video
