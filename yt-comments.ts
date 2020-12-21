@@ -97,20 +97,22 @@ async function checkFinished() {
 	if (!runningPostTask && probablyDone) {
 		runningPostTask = true;
 		refreshInterval = setInterval(() => {
-			if (probablyDone || refreshN >= 10) {
-				refreshN = 0
-				console.log("refresh")
-				//probablyDone = false // change this if things go wrong
-				api.paged = false
-				api.loadComments(config.id, "published", undefined, true, true);
-			} else {
-				refreshN ++
-				console.log("refresh incomplete, check for errors")
+			if (!config.suspended) {
+				if (probablyDone || refreshN >= 10) {
+					refreshN = 0
+					console.log("refresh")
+					//probablyDone = false // change this if things go wrong
+					api.paged = false
+					api.loadComments(config.id, "published", undefined, true, true);
+				} else {
+					refreshN ++
+					console.log("refresh incomplete, check for errors")
+				}
 			}
 		}, config.refreshTime * 1000);
 		resetInterval = setInterval(() => {
 			save()
-			if (probablyDone)
+			if (probablyDone && !config.suspended)
 				reset()
 				api.loadComments(config.id, "published", undefined);
 		}, config.longRefreshTime * 1000);
@@ -254,7 +256,8 @@ function go() {
 		totalComments = obj.items[0].statistics.commentCount;
 		let now = new Date();
 		now.setHours(now.getHours() + 1);
-		if (dateDeadline > now || !config.liveMode) {
+		console.log(dateDeadline, now)
+		if (!config.suspended) {
 			modStatuses.forEach(modStatus => {
 				api.loadComments(config.id, modStatus);
 			});
