@@ -252,10 +252,13 @@ function go() {
 		deadline = +dateDeadline;
 		api.uploader = obj.items[0].snippet.channelId;
 		totalComments = obj.items[0].statistics.commentCount;
-
-		modStatuses.forEach(modStatus => {
-			api.loadComments(config.id, modStatus);
-		});
+		let now = new Date();
+		now.setHours(now.getHours() + 1);
+		if (dateDeadline > now || !config.liveMode) {
+			modStatuses.forEach(modStatus => {
+				api.loadComments(config.id, modStatus);
+			});
+		}
 	}, console.log);
 }
 
