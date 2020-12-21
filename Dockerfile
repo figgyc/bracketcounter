@@ -5,5 +5,5 @@ RUN npm install
 RUN npm install -g typescript
 COPY . .
 RUN npx tsc
-CMD ["node" "yt-comments.js"]
+CMD ["node", "yt-comments.js"]
 EXPOSE 8080
