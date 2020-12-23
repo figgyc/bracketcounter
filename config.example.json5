@@ -3,6 +3,8 @@
     "id":  "mHq89x2z2Lc",
     "savestateFile": "./savestate.json",
     "liveMode":  true, // disable websockets systems
+    "suspended": false, // don't pull anything
+    "accessCode": "default", // password
     "maxMultiVoters": 1, // the maximum number of votes per person (use 0 for unlimited)
     "deadlineHours": 48, // only count comments up to this time after the video
     "refreshTime": 15, // amount of seconds to wait between runs of the background task and page refresh

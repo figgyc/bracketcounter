@@ -6,6 +6,7 @@ export namespace config {
     export const key: string = confObj.key;
     export const id: string = confObj.id;
     export const savestateFile: string = confObj.savestateFile;
+    export const accessCode: string = confObj.accessCode;
     export const suspended: boolean = confObj.suspended;
     export const liveMode: boolean = confObj.liveMode; // disable websockets systems
     export const maxMultiVoters: number = confObj.maxMultiVoters; // the maximum number of votes per person (use 0 for unlimited)

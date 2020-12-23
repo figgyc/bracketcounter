@@ -8,25 +8,41 @@ require('console-stamp')(console, []);
 
 let wss: WebSocket.Server | undefined = undefined
 
+let clientMap: { [ip: string]: WebSocket } = {}
+let authenticatedClients: Set<String> = new Set()
+
 if (config.liveMode) {
 	wss = new WebSocket.Server({ port: 8080 });
 
-	wss.on('connection', function connection(ws) {
+	wss.on('connection', (ws, request) => {
+		let ip = request.connection.remoteAddress!.toString()
+		clientMap[ip] = ws;
 		ws.send(JSON.stringify(currentMessage));
 		ws.on('error', () => console.log('websocket error'));
+		ws.on('message', data => {
+			try {
+				if (data.toString() == config.accessCode) {
+					authenticatedClients.add(ip)
+				}
+			} catch {}
+		})
+		ws.on("close", () => {
+			delete clientMap[ip];
+			authenticatedClients.delete(ip);
+		})
 	});
 
-	wss.on('error', () => console.log('websocket error'));
+	//wss.on('error', (e) => console.log('websocket error'));
 }
 // Broadcast to all.
 function broadcast(data: string) {
 	console.log(data)
 	if (wss != undefined) {
-		wss.clients.forEach(function each(client) {
-			if (client.readyState === WebSocket.OPEN) {
-				client.send(data);
+		Object.keys(clientMap).forEach(ip => {
+			if (clientMap[ip].readyState === WebSocket.OPEN && authenticatedClients.has(ip)) {
+				clientMap[ip].send(data);
 			}
-		});
+		})
 	}
 };
 
