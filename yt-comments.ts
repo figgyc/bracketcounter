@@ -17,11 +17,11 @@ if (config.liveMode) {
 	wss.on('connection', (ws, request) => {
 		let ip = request.connection.remoteAddress!.toString()
 		clientMap[ip] = ws;
-		ws.send(JSON.stringify(currentMessage));
 		ws.on('error', () => console.log('websocket error'));
 		ws.on('message', data => {
 			try {
 				if (data.toString() == config.accessCode) {
+					ws.send(JSON.stringify(currentMessage));
 					authenticatedClients.add(ip)
 				}
 			} catch {}
