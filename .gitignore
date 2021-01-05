@@ -74,3 +74,5 @@ savestate.json
 ssl.key
 ssl.pem
 Caddyfile
+
+auth.json

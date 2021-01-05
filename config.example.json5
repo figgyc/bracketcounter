@@ -1,39 +1,31 @@
 {
-    "key": "AIzaSyxxxxxxxxxxxxxxxxxxxxx", // replace with your actual api key, get one from https://console.developers.google.com/, dont share it with anyone
-    "id":  "mHq89x2z2Lc",
-    "savestateFile": "./savestate.json",
-    "liveMode":  true, // disable websockets systems
-    "suspended": false, // don't pull anything
+    // login settings
+    "isAuthenticated": false, // see README
+    "key": "AIzaSyxxxxxxxxxxxxxxxxxxxxx",
+    "clientid": "",
+    "clientsecret": "",
+    // live mode settings
+    "liveMode": false, // enable websockets systems for the website, you should probably leave this off
+    "suspended": false, // don't pull anything, designed for live mode so you can leave the service running without using quota, leave this off
     "accessCode": "default", // password
-    "maxMultiVoters": 1, // the maximum number of votes per person (use 0 for unlimited)
-    "deadlineHours": 48, // only count comments up to this time after the video
     "refreshTime": 15, // amount of seconds to wait between runs of the background task and page refresh
     "longRefreshTime": 28800, // amount of seconds to wait between runs of the background task and page refresh 
-    "re": RegExp = "/\[(.)\]/g", // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
+    // general settings
+    "id":  "mHq89x2z2Lc", // video ID, like in the link of the video
+    "savestateFile": "./savestate.json", // where the data is saved, you should probably leave this as is
+    "maxMultiVoters": 1, // the maximum number of votes per person (use 0 for unlimited)
+    "deadlineHours": 48, // only count comments up to this time after the video
+    "re": "/\[(.)\]/g", // this is the pattern used to decide what votes are like. for >1 character brackets replace . with .+
     // this object moderates who is a real contestant.
-    "contestants": { [contestant: string]: [string, string] } = { // color, name
-        // 4cteam 
-        //a: ["Ballony", "#02be81"], bfb18 gone
-        //a: ["Bubble", "#86edfe"], bfb22 gone
+    "contestants": { // color, name
         b: ["Gelatin", "#12d70d"],
-        c: ["Leafy", "#70f31c"],
-        //c: ["Lollipop", "#b669f3"], bfb27 gone
-        //e: ["Ruby", "#fd1850"], bfb20 gone
-        //d: ["Teardrop", "#1fbce9"], //
-        // xcteam 
-        //a: ["Blocky", "#f42628"], bfb24 gone
-        //a: ["Firey", "#ffa901"], bfb25 gone
+        //d: ["Teardrop", "#1fbce9"],
         a: ["Flower", "#ff72ff"],
-        //d: ["Loser", "#ffe286"], bfb21 gone
-        //e: ["Spongy", "#f3d600"], bfb19 gone
-        //d: ["Taco", "#f9d599"], bfb23 gone
-        //a: ["Woody", "#f3a656"], // */
-
-    }, // template object to ensure ordering is correct
+    },
 
     "blacklist": [
 
-    ] // list of user ids who do not want to be counted
+    ], // list of user ids who do not want to be counted
 }
 
 

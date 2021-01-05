@@ -203,7 +203,7 @@ export class YoutubeAPI3 {
                     if (obj.nextPageToken && paginate && (!pageflag || !this.paged)) {// recheck paged
                         this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
                     } else {
-                        this.setDone();
+                        this.setDone(modStatus);
                         console.log("refresh done");
                     }
                 

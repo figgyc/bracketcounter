@@ -8,6 +8,7 @@ export namespace config {
     export const savestateFile: string = confObj.savestateFile;
     export const accessCode: string = confObj.accessCode;
     export const suspended: boolean = confObj.suspended;
+    export const isAuthenticated: boolean = confObj.isAuthenticated;
     export const liveMode: boolean = confObj.liveMode; // disable websockets systems
     export const maxMultiVoters: number = confObj.maxMultiVoters; // the maximum number of votes per person (use 0 for unlimited)
     export const deadlineHours: number = confObj.deadlineHours; // only count comments up to this time after the video

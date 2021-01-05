@@ -77,7 +77,11 @@ let runningPostTask: boolean = false;
 let finalVotes: { [contestant: string]: number } = {}; // for fancy display of votes at the end. only used for filtering atm
 let currentMessage: any = {};
 // static things
-const modStatuses: string[] = ["published"]; //, "heldForReview", "likelySpam"]; only on your own videos with authentication, todo: add authentication?
+let modStatuses: string[] = ["published"]; //, "heldForReview", "likelySpam"]; only on your own videos with authentication, todo: add authentication?
+if (config.isAuthenticated) {
+	modStatuses.push("heldForReview");
+	modStatuses.push("likelySpam");
+}
 
 // set on start 'config' things
 let deadline: number = Date.now();
@@ -103,8 +107,13 @@ function allMatches(str: string, checker: RegExp): Promise<Array<string>> {
 	});
 }
 
-function setDone() {
-	probablyDone = true
+let doneStatuses: { [status: string]: boolean} = {}
+modStatuses.forEach(ms => {
+	doneStatuses[ms] = false
+})
+function setDone(modStatus: string, doneValue: boolean) {
+	doneStatuses[modStatus] = doneValue
+	probablyDone = (Object.values(doneStatuses).every(v => (v == true)))
 }
 
 // output results (used to only do when done, thus name)
@@ -119,7 +128,9 @@ async function checkFinished() {
 					console.log("refresh")
 					//probablyDone = false // change this if things go wrong
 					api.paged = false
-					api.loadComments(config.id, "published", undefined, true, true);
+					modStatuses.forEach(modStatus => {
+						api.loadComments(config.id, modStatus, undefined, true, true);
+					})
 				} else {
 					refreshN ++
 					console.log("refresh incomplete, check for errors")
@@ -130,7 +141,9 @@ async function checkFinished() {
 			save()
 			if (probablyDone && !config.suspended)
 				reset()
-				api.loadComments(config.id, "published", undefined);
+				modStatuses.forEach(modStatus => {
+					api.loadComments(config.id, modStatus, undefined);
+				})
 		}, config.longRefreshTime * 1000);
 	}
 	finalVotes = {};
@@ -244,6 +257,9 @@ function reset() {
 	validVotes = 0
 	finalVotes = {}
 	entries = []
+	modStatuses.forEach(ms => {
+		doneStatuses[ms] = false
+	})
 	probablyDone = false
 	currentMessage.status.done = false
 	if (refreshInterval) clearInterval(refreshInterval)
