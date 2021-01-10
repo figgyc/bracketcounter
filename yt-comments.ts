@@ -94,16 +94,7 @@ let refreshN = 0;
 // regex helper, get all [x] letters in a comment
 function allMatches(str: string, checker: RegExp): Promise<Array<string>> {
 	return new Promise<Array<string>>(resolve => {
-		var matches: Array<string> = [];
-		let match: RegExpExecArray | null;
-		while ((match = checker.exec(str)) !== null) {
-			matches.push(match[1].toLowerCase())
-		}
-		if (matches) {
-			resolve(matches);
-		} else {
-			resolve([]);
-		}
+        resolve(Array.from(str.matchAll(checker)).map(x => x[1]))
 	});
 }
 
