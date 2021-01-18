@@ -103,7 +103,6 @@ modStatuses.forEach(ms => {
 	doneStatuses[ms] = false
 })
 function setDone(modStatus: string, doneValue: boolean) {
-    console.log(doneStatuses)
 	doneStatuses[modStatus] = doneValue
 	probablyDone = (Object.values(doneStatuses).every(v => (v == true)))
 }
@@ -111,7 +110,6 @@ function setDone(modStatus: string, doneValue: boolean) {
 // output results (used to only do when done, thus name)
 async function checkFinished() {
 	//if (!probablyDone) return;
-    console.log(doneStatuses);
 	if (!runningPostTask && probablyDone) {
 		runningPostTask = true;
 		refreshInterval = setInterval(() => {
@@ -132,11 +130,12 @@ async function checkFinished() {
 		}, config.refreshTime * 1000);
 		resetInterval = setInterval(() => {
 			save()
-			if (probablyDone && !config.suspended)
+			if (probablyDone && !config.suspended) {
 				reset()
 				modStatuses.forEach(modStatus => {
 					api.loadComments(config.id, modStatus, undefined);
 				})
+            }
 		}, config.longRefreshTime * 1000);
 	}
 	finalVotes = {};
