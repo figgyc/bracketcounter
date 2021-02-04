@@ -15,7 +15,7 @@
     "savestateFile": "./savestate.json", // where the data is saved, you should probably leave this as is
     "maxMultiVoters": 1, // the maximum number of votes per person (use 0 for unlimited)
     "deadlineHours": 48, // only count comments up to this time after the video
-    "re": "/\[(.)\]/g", // this is the pattern used to decide what votes are like. for >1 character brackets replace . with .+
+    "re": "\[(.)\]", // this is the pattern used to decide what votes are like. for >1 character brackets replace . with .+
     // this object moderates who is a real contestant.
     "contestants": { // color, name
         b: ["Gelatin", "#12d70d"],

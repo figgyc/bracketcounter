@@ -158,6 +158,7 @@ export class YoutubeAPI3 {
             : item.snippet;
         if (snippet.authorChannelId != undefined && snippet.authorChannelId.value == this.uploader) { item.isReply = true } // This is to prevent any JNJ pinned comments from disrupting the automatic page limiter since they are always scanned
         const entry = {
+            likes: snippet.likeCount ? snippet.likeCount : 0,
             content: snippet.textDisplay,
             id: item.id,
             isReply: item.isReply ? true : false,
