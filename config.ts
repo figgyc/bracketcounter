@@ -16,7 +16,6 @@ export namespace config {
     export const refreshTime: number = confObj.refreshTime; // amount of seconds to wait between runs of the background task and page refresh
     export const longRefreshTime: number = confObj.longRefreshTime; // amount of seconds to wait between runs of the background task and page refresh
     export const re: RegExp = new RegExp(confObj.re, 'g'); // regex [X] where X can be any character used to count votes, apparently for some reason [a-hA-H4XxIi] does less results but should it?
-    console.log(re);
     // this object moderates who is a real contestant.
     export const contestants: { [contestant: string]: [string, string] } = confObj.contestants; // template object to ensure ordering is correct
 

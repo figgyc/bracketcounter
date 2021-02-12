@@ -166,7 +166,9 @@ export class YoutubeAPI3 {
             userName: snippet.authorDisplayName
                 ? snippet.authorDisplayName
                 : "unknown",
-            date: Date.parse(snippet.updatedAt)
+            date: Date.parse(snippet.updatedAt),
+            postDate: Date.parse(snippet.publishedAt),
+            edited: (snippet.updatedAt == snippet.publishedAt ? false : true),
         };
         this.processEntry(entry);
     }
