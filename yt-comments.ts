@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { YoutubeAPI3 } from "./api"
 import {config} from "./config"
 import WebSocket from "ws";
@@ -12,7 +13,7 @@ let clientMap: { [ip: string]: WebSocket } = {}
 let authenticatedClients: Set<String> = new Set()
 
 if (config.liveMode) {
-	wss = new WebSocket.Server({ port: 8080 });
+	wss = new WebSocket.Server({ port: config.port });
 
 	wss.on('connection', (ws, request) => {
 		let ip = request.connection.remoteAddress!.toString()

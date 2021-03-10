@@ -1,7 +1,12 @@
 import * as json5 from "json5";
 import * as fs from "fs";
 
-let confObj = json5.parse(fs.readFileSync("config.json5", {encoding: "utf-8"}));
+let configFilename = "config.json5";
+if (process.argv.length > 2) {
+    configFilename = process.argv[2];
+}
+
+let confObj = json5.parse(fs.readFileSync(configFilename, {encoding: "utf-8"}));
 export namespace config {
     export const key: string = confObj.key;
     export const id: string = confObj.id;
@@ -11,6 +16,7 @@ export namespace config {
     export const isAuthenticated: boolean = confObj.isAuthenticated;
     export const style: string = confObj.style;
     export const liveMode: boolean = confObj.liveMode; // disable websockets systems
+    export const port: number = confObj.port; // port for ws service
     export const maxMultiVoters: number = confObj.maxMultiVoters; // the maximum number of votes per person (use 0 for unlimited)
     export const deadlineHours: number = confObj.deadlineHours; // only count comments up to this time after the video
     export const refreshTime: number = confObj.refreshTime; // amount of seconds to wait between runs of the background task and page refresh

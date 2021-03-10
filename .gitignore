@@ -76,3 +76,6 @@ ssl.pem
 Caddyfile
 
 auth.json
+
+# nix
+result
