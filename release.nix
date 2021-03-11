@@ -3,5 +3,5 @@
 
 with pkgs;
 rec {
-  application = callPackage ./default.nix {};
+  application = callPackage ./default.nix { src = ./.; };
 }

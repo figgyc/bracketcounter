@@ -4,10 +4,10 @@
 , nodePackages
 , pkgs
 , lib
+, src
 }:
 
 let
-  src = nix-gitignore.gitignoreSource [".git"] ./.;
   nodeVersion = builtins.elemAt (lib.versions.splitVersion nodejs.version) 0;
   node2nixDrv = dev: runCommandNoCC "node2nix" {} ''
     mkdir $out
