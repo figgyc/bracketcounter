@@ -1,12 +1,12 @@
-import * as json5 from "json5";
+import * as toml from "toml";
 import * as fs from "fs";
 
-let configFilename = "config.json5";
+let configFilename = "config.toml";
 if (process.argv.length > 2) {
     configFilename = process.argv[2];
 }
 
-let confObj = json5.parse(fs.readFileSync(configFilename, {encoding: "utf-8"}));
+let confObj = toml.parse(fs.readFileSync(configFilename, {encoding: "utf-8"}));
 export namespace config {
     export const key: string = confObj.key;
     export const id: string = confObj.id;

@@ -5,13 +5,14 @@
 , pkgs
 , lib
 , src
+, node2nix
 }:
 
 let
   nodeVersion = builtins.elemAt (lib.versions.splitVersion nodejs.version) 0;
   node2nixDrv = dev: runCommandNoCC "node2nix" {} ''
     mkdir $out
-    ${nodePackages.node2nix}/bin/node2nix \
+    ${node2nix}/bin/node2nix \
       ${lib.optionalString dev "--development"} \
       --input ${src}/package.json \
       --lock ${src}/package-lock.json \

@@ -64,8 +64,12 @@ typings/
 *.map
 *.js
 
+# historical config files
 key.ts
 config.json5
+
+# current config files
+config.toml
 
 # serving
 caddy2

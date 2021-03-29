@@ -1,0 +1,138 @@
+# General options (required)
+key = "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" # Replace with your actual api key, (see the README) and don't share it with anyone
+id = "d5zsqiNgBGU" # YouTube video ID to get the comments for
+savestateFile = "./savestate.json" # Location where the savestate is saved (you probably don't want to change this)
+maxMultiVoters = 1 # the maximum number of votes per person (use 0 for unlimited)
+deadlineHours = 48 # only count comments up to this time after the video
+
+# Bracketcounter is a live program: if you keep it running it will get more votes.
+# However it will not refetch all the comments regularly, because of the API quota system.
+# Basically YouTube only allow you to send a number of API requests per day.
+# This limits you to (by default) about 10000 pages of comments a day.
+# There is two types of refresh:
+# * Short refresh
+#   Bracketcounter will only fetch pages of comments until it sees a comment which it has
+#   already seen. This is sufficient for 90% of accuracy.
+# * Full refresh (recount)
+#   Bracketcounter will delete the entire current working set of comments and get all the
+#   pages again. This is more accurate, because it will be able to detect deletions and edits of
+#   old comments, but it is slower and uses more quota, which is why it is run less frequently.
+# Too force a full refresh, which you should do at the end of voting,
+# stop the program, delete the savestate, and restart it.
+refreshTime = 15 # Amount of seconds for the page refresh
+longRefreshTime = 28800 # Amount of seconds to wait for the full refresh
+
+# re is a regular expression (see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions ) used to find votes in a comment.
+# It should have one "capture group" which should contain only the vote code.
+# The default ("\\[(.)\\]") will count single character, square bracket votes (eg [A] or [a]).
+# Bracketcounter is designed to be case insensitive (all uppercase letters are converted to lowercase),
+# so bear this in mind if you create a regex.
+# If you're counting BFB or a similar format you shouldn't need to change this.
+re = "\\[(.)\\]"
+
+# WebSockets system options
+# These are only really useful for figgyc or if you want to run your own live results website
+liveMode = true # Enable websockets systems
+port = 9764 # This is the port on which the websocket is served, you'll want to use this number in your reverse proxy
+suspended = false # Make the program not fetch comments (intended to let you keep the service running without wasting quota)
+accessCode = "default" # Password, set on client with localStorage.setItem("access", "password"), if you don't want to use a password make sure this is "default"
+
+# List of user IDs who you do not want to count
+blacklist = [
+
+]
+
+# Only options with the format code = ["name", "#color"] are counted by the program.
+# The color format used here is "hex colors". Google "color picker", or find it in most major image editors.
+[contestants]
+b = ["Gelatin", "#12d70d"]
+a = ["Flower", "#ff72ff"]
+
+# COLOR LIST
+# TPOT
+# Death PACT again
+# ["Lightning", "#e8eb14"],
+# ["Marker", "#9451ff"],
+# ["Tree", "#11c852"],
+# ["Black Hole", "#06041c"],
+# ["Remote", "#4c3c3d"],
+# ["Fanny", "#326bf6"],
+# # ["Pie", "#f7b578"],
+
+# are you okay?
+# ["Eraser", "#f96887"],
+# ["Fries", "#f38749"],
+# ["Golf Ball", "#bac2cf"],
+# ["Pen", "#1d87fd"],
+# ["Puffball", "#ffd1ff"],
+# ["Tennis Ball", "#b7e834"],
+# ["TV", "#33384b"],
+
+# Just Not
+# ["Bomby", "#787ba4"],
+# ["Book", "#00dd52"],
+# ["Cake", "#9c6058"],
+# ["Naily", "#c4bbcc"],
+# ["Nickel", "#85aeb4"],
+# ["Pillow", "#e6bef2"], # <3
+# ["Price Tag", "#fa3a3b"]
+
+# team8s
+# ["Barf Bag", "#dac48a"],
+# ["Coiny", "#ffa944"],
+# ["Donut", "#f4ae70"],
+# ["Gaty", "#bac6ff"],
+# ["Needle", "#bdcccf"],
+# ["Pin", "#ff6759"],
+# ["Saw", "#fe769c"],
+
+# the S!
+# ["Bottle", "#8dd1ba"],
+# ["Clock", "#6899db"],
+# ["Cloudy", "#bfd3ec"],
+# ["Ice Cube", "#c2d4f8"],
+# ["Rocky", "#818d81"],
+# ["Winner", "#bfc5ff"],
+# ["Yellow Face", "#fed102"],
+
+# The Strongest Team on Earth.
+# ["Basketball", "#ff8329"],
+# ["Bell", "#e08f62"],
+# ["Eggy", "#ffef54"],
+# ["Foldy", "#5acbd3"],
+# ["Grassy", "#4ae600"],
+# ["Robot Flower", "#fe8cfe"],
+# ["Snowball", "#c1c2f2"],
+
+# EXIT
+# ["8 Ball", "#909bb7"],
+# ["Bracelety", "#5ee1fd"],
+# ["David", "#d6ebec"],
+# ["Dora", "#ae7562"],
+# ["Firey Jr", "#ffd62e"],
+# ["Match", "#ff9d3c"],
+# ["Roboty", "#22e16d"],
+# ["Ruby", "#fd1850"],
+# ["Pencil", "#ffb20a"],
+# ["Spongy", "#fdf02f"],
+# ["Stapy", "#ff3778"],
+
+# BFB split
+# ["Balloony", "#02be81"],
+# ["Blocky", "#f42628"],
+# ["Bubble", "#86edfe"],
+# ["Firey", "#ffa901"],
+# ["Flower", "#ff72ff"],
+# ["Gelatin", "#12d70d"],
+# ["Leafy", "#70f31c"],
+# ["Lollipop", "#b669f3"],
+# ["Loser", "#ffe286"],
+# ["Taco", "#f9d599"],
+# ["Teardrop", "#1fbce9"],
+# ["Woody", "#f3a656"],
+
+
+# ["Four", "#327cd0"],
+# ["X", "#fffd34"],
+# ---
+# TPOT recos: see https://cdn.discordapp.com/attachments/397133769431318538/692816182205743104/unknown.png

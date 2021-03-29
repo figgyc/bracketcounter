@@ -1,7 +1,9 @@
 {
   inputs.nixpkgs.url = "nixpkgs/nixos-20.09";
+  inputs.node2nix.url = "github:svanderburg/node2nix";
+  inputs.node2nix.flake = false;
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, node2nix }:
 
     let
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
@@ -9,7 +11,10 @@
     in {
 
       overlay = final: prev: {
-        bracketcounter = prev.pkgs.callPackage ./. { src = self; };
+        bracketcounter = prev.pkgs.callPackage ./. {
+            src = self;
+            node2nix = (prev.pkgs.callPackage node2nix {}).package;
+        };
       };
 
       packages = forAllSystems (system: {
