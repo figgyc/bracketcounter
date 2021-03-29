@@ -54,7 +54,10 @@ function setTotalComments(ttotalComments: number) {
 }
 
 function scrubKey(config: any): any {
-	config.key = null
+	config.key = undefined
+    config.isAuthenticated = undefined
+    config.clientId = undefined
+    config.clientSecret = undefined
 	return config
 }
 
@@ -264,7 +267,8 @@ function go() {
 	votingUsers = {};
 	finalVotes = {};
 	probablyDone = false;
-	api.apiFast("videos", {
+
+    api.apiFast("videos", {
 		part: "statistics,snippet",
 		id: config.id
 	}).then(resp => {
@@ -287,7 +291,8 @@ function go() {
 				api.loadComments(config.id, modStatus);
 			});
 		}
-	}, console.log);
+	}, console.log);    
+
 }
 
 if (fs.existsSync(config.savestateFile)) {

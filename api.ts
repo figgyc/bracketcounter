@@ -1,10 +1,11 @@
 // google api stuff
 
-import { config } from "./config"
-const key = config.key;
 import async from "async";
 import https from "https";
+import querystring from "querystring";
 import { IncomingMessage } from "http";
+import { AuthHelper } from "./auth";
+import * as urlLib from "url";
 
 export class YoutubeAPI3 {
 
@@ -15,6 +16,7 @@ export class YoutubeAPI3 {
     public paged: boolean = false
     public uploader: string = "" // used to not stop rescanning pinned comments since pins are not reported in youtube's api
     pageflag: boolean = false
+    auth: AuthHelper
 
     async snooze(ms: number) { new Promise(resolve => setTimeout(resolve, ms)); }
 
@@ -23,32 +25,24 @@ export class YoutubeAPI3 {
         this.processEntry = processEntry
         this.setDone = setDone
         this.setTotalComments = setTotalComments
-    }
-
-    // helper function for below to be easier to use, encodes objects to query strings
-    jsonToQueryString(json: { [key: string]: any }) {
-        return (
-            "?" +
-            Object.keys(json)
-                .map(function (key: string) {
-                    if (json[key] != null) {
-                        return (
-                            encodeURIComponent(key) +
-                            "=" +
-                            encodeURIComponent(json[key])
-                        );
-                    }
-                })
-                .join("&")
-        );
+        this.auth = new AuthHelper(this)
     }
 
     // nice fetch alternative for node
-    async getContent(url: string): Promise<string> {
+    async getContent(url: string, params: any, post: boolean = false): Promise<string> {
         // return new pending promise
         return new Promise<string>((resolve, reject) => {
             // select http or https module, depending on reqested url
-            const request = https.get(url, (response: IncomingMessage) => {
+            let parsedUrl = new urlLib.URL((url + (post ? "" : "?" + querystring.stringify(params))))
+            const request = https.request({
+                path: parsedUrl.pathname + parsedUrl.search,
+                host: parsedUrl.hostname,
+                port: parsedUrl.port, 
+                method: post ? "POST" : "GET",
+                headers: post ? {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                } : undefined
+            }, (response: IncomingMessage) => {
                 // temporary data holder
                 const body: String[] = [];
                 // on every content chunk, push it to the data array
@@ -75,22 +69,22 @@ export class YoutubeAPI3 {
                     }
                 });
             });
+            if (post) request.write(querystring.stringify(params))
             // handle connection errors of the request
             request.on("error", err => reject(err));
+            request.end();
         });
     }
 
     // fast alternative to gapi request that is real async
     async apiFast(endpoint: string, parameters: { [key: string]: any }, n = 0): Promise<any> {
-        parameters.key = key;
+        Object.assign(parameters, await this.auth.authenticate());
         parameters.prettyPrint = false;
-        let url: string = `https://www.googleapis.com/youtube/v3/${endpoint}${this.jsonToQueryString(
-            parameters
-        )}`;
+        let url: string = `https://www.googleapis.com/youtube/v3/${endpoint}`;
         //console.log(url)
         let resp: string = ""
         try {
-            resp = await this.getContent(url); 
+            resp = await this.getContent(url, parameters); 
         } catch(e) {
             console.log("retrying", e)
             n ++

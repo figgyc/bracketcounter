@@ -14,6 +14,9 @@ export namespace config {
     export const accessCode: string = confObj.accessCode;
     export const suspended: boolean = confObj.suspended;
     export const isAuthenticated: boolean = confObj.isAuthenticated;
+    export const clientId: string = confObj.clientId;
+    export const clientSecret: string = confObj.clientSecret;
+    export const authCache: string = confObj.authCache;
     export const style: string = confObj.style;
     export const liveMode: boolean = confObj.liveMode; // disable websockets systems
     export const port: number = confObj.port; // port for ws service

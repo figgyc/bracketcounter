@@ -59,7 +59,8 @@
   "files": [
     "yt-comments.ts",
     "api.ts",
-    "config.ts"
+    "config.ts",
+    "auth.ts"
   ],
   "exclude": [
     "node_modules/@types/google.visualization/*"
