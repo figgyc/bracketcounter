@@ -1,18 +1,33 @@
 {
   "nodes": {
-    "nixpkgs": {
+    "flake-utils": {
       "locked": {
-        "lastModified": 1615373830,
-        "narHash": "sha256-PxZCX08I7rEVxyGDIYFx7mHJ01WQi9+rdXhI/b/Q+FM=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "89a06218ca0b931ab872a9c99aa479285183d3c7",
+        "lastModified": 1629284811,
+        "narHash": "sha256-JHgasjPR0/J1J3DRm4KxM4zTyAj4IOJY8vIl75v/kPI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c5d161cc0af116a2e17f54316f0bf43f0819785c",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-20.09",
-        "type": "indirect"
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1629396495,
+        "narHash": "sha256-hS/SmIIu1ElJtJXfyWHBiGD1Qh4W9tkbkubzsqrYLV4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ed2fdff7136730d596742f6326f87ed8d20af493",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "node2nix": {
@@ -33,6 +48,7 @@
     },
     "root": {
       "inputs": {
+        "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "node2nix": "node2nix"
       }

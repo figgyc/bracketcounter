@@ -34,6 +34,7 @@ longRefreshTime = 28800 # Amount of seconds to wait for the full refresh
 # re is a regular expression (see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions ) used to find votes in a comment.
 # It should have one "capture group" which should contain only the vote code.
 # The default ("\\[(.)\\]") will count single character, square bracket votes (eg [A] or [a]).
+# For any number over 1 character bracket votes (or a combination eg 1 and 2 characters) try "\\[(.+)\\]"
 # Bracketcounter is designed to be case insensitive (all uppercase letters are converted to lowercase),
 # so bear this in mind if you create a regex.
 # If you're counting BFB or a similar format you shouldn't need to change this.
@@ -41,7 +42,7 @@ re = "\\[(.)\\]"
 
 # WebSockets system options
 # These are only really useful for figgyc or if you want to run your own live results website
-liveMode = true # Enable websockets systems
+liveMode = false # Enable websockets systems
 port = 9764 # This is the port on which the websocket is served, you'll want to use this number in your reverse proxy
 suspended = false # Make the program not fetch comments (intended to let you keep the service running without wasting quota)
 accessCode = "default" # Password, set on client with localStorage.setItem("access", "password"), if you don't want to use a password make sure this is "default"
@@ -60,88 +61,88 @@ a = ["Flower", "#ff72ff"]
 # COLOR LIST
 # TPOT
 # Death PACT again
-# ["Lightning", "#e8eb14"],
-# ["Marker", "#9451ff"],
-# ["Tree", "#11c852"],
-# ["Black Hole", "#06041c"],
-# ["Remote", "#4c3c3d"],
-# ["Fanny", "#326bf6"],
-# # ["Pie", "#f7b578"],
+# ["Lightning", "#e8eb14"]
+# ["Marker", "#9451ff"]
+# ["Tree", "#11c852"]
+# ["Black Hole", "#06041c"]
+# ["Remote", "#4c3c3d"]
+# ["Fanny", "#326bf6"]
+# # ["Pie", "#f7b578"]
 
 # are you okay?
-# ["Eraser", "#f96887"],
-# ["Fries", "#f38749"],
-# ["Golf Ball", "#bac2cf"],
-# ["Pen", "#1d87fd"],
-# ["Puffball", "#ffd1ff"],
-# ["Tennis Ball", "#b7e834"],
-# ["TV", "#33384b"],
+# ["Eraser", "#f96887"]
+# ["Fries", "#f38749"]
+# ["Golf Ball", "#bac2cf"]
+# ["Pen", "#1d87fd"]
+# ["Puffball", "#ffd1ff"]
+# ["Tennis Ball", "#b7e834"]
+# ["TV", "#33384b"]
 
 # Just Not
-# ["Bomby", "#787ba4"],
-# ["Book", "#00dd52"],
-# ["Cake", "#9c6058"],
-# ["Naily", "#c4bbcc"],
-# ["Nickel", "#85aeb4"],
-# ["Pillow", "#e6bef2"], # <3
+# ["Bomby", "#787ba4"]
+# ["Book", "#00dd52"]
+# ["Cake", "#9c6058"]
+# ["Naily", "#c4bbcc"]
+# ["Nickel", "#85aeb4"]
+# ["Pillow", "#e6bef2"] # <3
 # ["Price Tag", "#fa3a3b"]
 
 # team8s
-# ["Barf Bag", "#dac48a"],
-# ["Coiny", "#ffa944"],
-# ["Donut", "#f4ae70"],
-# ["Gaty", "#bac6ff"],
-# ["Needle", "#bdcccf"],
-# ["Pin", "#ff6759"],
-# ["Saw", "#fe769c"],
+# ["Barf Bag", "#dac48a"]
+# ["Coiny", "#ffa944"]
+# ["Donut", "#f4ae70"]
+# ["Gaty", "#bac6ff"]
+# ["Needle", "#bdcccf"]
+# ["Pin", "#ff6759"]
+# ["Saw", "#fe769c"]
 
 # the S!
-# ["Bottle", "#8dd1ba"],
-# ["Clock", "#6899db"],
-# ["Cloudy", "#bfd3ec"],
-# ["Ice Cube", "#c2d4f8"],
-# ["Rocky", "#818d81"],
-# ["Winner", "#bfc5ff"],
-# ["Yellow Face", "#fed102"],
+# ["Bottle", "#8dd1ba"]
+# ["Clock", "#6899db"]
+# ["Cloudy", "#bfd3ec"]
+# ["Ice Cube", "#c2d4f8"]
+# ["Rocky", "#818d81"]
+# ["Winner", "#bfc5ff"]
+# ["Yellow Face", "#fed102"]
 
 # The Strongest Team on Earth.
-# ["Basketball", "#ff8329"],
-# ["Bell", "#e08f62"],
-# ["Eggy", "#ffef54"],
-# ["Foldy", "#5acbd3"],
-# ["Grassy", "#4ae600"],
-# ["Robot Flower", "#fe8cfe"],
-# ["Snowball", "#c1c2f2"],
+# ["Basketball", "#ff8329"]
+# ["Bell", "#e08f62"]
+# ["Eggy", "#ffef54"]
+# ["Foldy", "#5acbd3"]
+# ["Grassy", "#4ae600"]
+# ["Robot Flower", "#fe8cfe"]
+# ["Snowball", "#c1c2f2"]
 
 # EXIT
-# ["8 Ball", "#909bb7"],
-# ["Bracelety", "#5ee1fd"],
-# ["David", "#d6ebec"],
-# ["Dora", "#ae7562"],
-# ["Firey Jr", "#ffd62e"],
-# ["Match", "#ff9d3c"],
-# ["Roboty", "#22e16d"],
-# ["Ruby", "#fd1850"],
-# ["Pencil", "#ffb20a"],
-# ["Spongy", "#fdf02f"],
-# ["Stapy", "#ff3778"],
+# ["8 Ball", "#909bb7"]
+# ["Bracelety", "#5ee1fd"]
+# ["David", "#d6ebec"]
+# ["Dora", "#ae7562"]
+# ["Firey Jr", "#ffd62e"]
+# ["Match", "#ff9d3c"]
+# ["Roboty", "#22e16d"]
+# ["Ruby", "#fd1850"]
+# ["Pencil", "#ffb20a"]
+# ["Spongy", "#fdf02f"]
+# ["Stapy", "#ff3778"]
 
 # BFB split
-# ["Balloony", "#02be81"],
-# ["Blocky", "#f42628"],
-# ["Bubble", "#86edfe"],
-# ["Firey", "#ffa901"],
-# ["Flower", "#ff72ff"],
-# ["Gelatin", "#12d70d"],
-# ["Leafy", "#70f31c"],
-# ["Lollipop", "#b669f3"],
-# ["Loser", "#ffe286"],
-# ["Taco", "#f9d599"],
-# ["Teardrop", "#1fbce9"],
-# ["Woody", "#f3a656"],
+# ["Balloony", "#02be81"]
+# ["Blocky", "#f42628"]
+# ["Bubble", "#86edfe"]
+# ["Firey", "#ffa901"]
+# ["Flower", "#ff72ff"]
+# ["Gelatin", "#12d70d"]
+# ["Leafy", "#70f31c"]
+# ["Lollipop", "#b669f3"]
+# ["Loser", "#ffe286"]
+# ["Taco", "#f9d599"]
+# ["Teardrop", "#1fbce9"]
+# ["Woody", "#f3a656"]
 
 
-# ["Four", "#327cd0"],
-# ["X", "#fffd34"],
+# ["Four", "#327cd0"]
+# ["X", "#fffd34"]
 # ---
 # TPOT recos: see https://cdn.discordapp.com/attachments/397133769431318538/692816182205743104/unknown.png
