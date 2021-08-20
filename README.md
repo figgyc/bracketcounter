@@ -23,7 +23,7 @@ This is the easiest setup, and it should be accurate enough for most cases. This
 
 However, the drawback of this API-key based setup is that it isn't authenticated, therefore it isn't able to count comments that are "Held for review" in YouTube Studio on your own videos. You might want this, but often this results in legitimate votes being caught in the filters, so it's best to go through them manually and approve real vote comments. If this isn't viable you should use the slightly less easy setup below which can count comments in all 3 tabs.
 1. [Go here](https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials), click Create Credentials and pick "API key".
-2. Copy the API key into the `key` section of the config file.
+2. Copy the API key into the `key` section of the config file. Make sure `isAuthenticated` is `false`.
 
 ### Advanced setup (OAuth):
 This allows you to count "held for review" comments, but it is slightly harder to set up. **Note:** Do not use this method when you are counting videos not uploaded by you, or you will get errors!
