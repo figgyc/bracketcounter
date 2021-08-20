@@ -36,6 +36,7 @@ if (config.liveMode) {
 }
 // Broadcast to all.
 function broadcast(data: string) {
+	if (data == "{}") return // don't send empty data
 	console.log(data)
 	if (wss != undefined) {
 		Object.keys(clientMap).forEach(ip => {
