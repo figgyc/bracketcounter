@@ -48,3 +48,4 @@ This **requires technical knowledge** of network administration.
 1. Set up a "reverse proxy" server, like Caddy or Nginx, as follows:
     - Proxy the websocket (default port 9764) to `/socket`.
     - Serve the bracketcounter-web `dist` folder at `/` (the web root)
+1. Run your web server and `node yt-comments.js` at the same time.
