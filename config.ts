@@ -17,7 +17,6 @@ export namespace config {
     export const clientId: string = confObj.clientId;
     export const clientSecret: string = confObj.clientSecret;
     export const authCache: string = confObj.authCache;
-    export const style: string = confObj.style;
     export const liveMode: boolean = confObj.liveMode; // disable websockets systems
     export const port: number = confObj.port; // port for ws service
     export const maxMultiVoters: number = confObj.maxMultiVoters; // the maximum number of votes per person (use 0 for unlimited)

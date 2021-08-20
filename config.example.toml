@@ -2,7 +2,7 @@
 id = "d5zsqiNgBGU" # YouTube video ID to get the comments for
 savestateFile = "./savestate.json" # Location where the savestate is saved (you probably don't want to change this)
 maxMultiVoters = 1 # The maximum number of votes per person (use 0 for unlimited)
-deadlineHours = 48 # Only count comments up to this time after the video
+deadlineHours = 48 # Only count comments up to this time in hours after the video is uploaded (use 0 for unlimited)
 
 # Authentication (required)
 # Set to true to use OAuth2, false to use API key. Remember to set this back to false if you're counting videos not uploaded by you.
@@ -28,6 +28,8 @@ authCache = "./authdata.json" # file where OAuth2 tokens are saved (do not share
 #   old comments, but it is slower and uses more quota, which is why it is run less frequently.
 # Too force a full refresh, which you should do at the end of voting,
 # stop the program, delete the savestate, and restart it.
+# The refresh time here may be too frequent for videos with *a lot* of comments like BFB;
+# try 30 seconds if you run into quota issues. Check your quota usage in the Google API console.
 refreshTime = 15 # Amount of seconds for the page refresh
 longRefreshTime = 28800 # Amount of seconds to wait for the full refresh
 

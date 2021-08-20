@@ -35,6 +35,10 @@ This allows you to count "held for review" comments, but it is slightly harder t
 **Once you've done the setup**,  run, `node yt-comments.js` in the terminal. Once the results are done counting they should appear in the command prompt/terminal window. Press Ctrl+C to exit safely once the count is complete. For the most accurate numbers and data analysis, you should process `savestate.json` with [the data tools](https://github.com/figgyc/bracketcounter-datastuff).
 If you're having any trouble feel free to ask me.
 
+## Known issues
+- If you pin a comment written by someone other than whoever uploaded the video, then live updating will not work. Videos with pinned comments by the uploader and no pinned comment work fine. This also doesn't cause any problems if you aren't using live counting functionality. (Technical explanation: The "fast reload" works by scanning comments until it finds one that it has already seen. Since pinned comments are... pinned, they will always appear first and therefore be seen and stop the scanning. There is a workaround in the code which doesn't stop scanning if the reply is by the uploader of the video, but there is no way to check if a comment is pinned in the YouTube API, so other pinned comments don't work and break the counter.)
+- The code is very messy :P
+
 ## Live counting / website
 This is completely optional, and you don't need to do it if you just want voting results, but if you want your own "live counting" style website like the old figgyc's Bracketcounter website, then you can set it up.
 This **requires technical knowledge** of network administration.
@@ -42,5 +46,5 @@ This **requires technical knowledge** of network administration.
 1. Clone [bracketcounter-web](https://github.com/figgyc/bracketcounter-web).
 1. Run `cd bracketcounter-web; npm i --dev; tsc` in a command prompt/terminal.
 1. Set up a "reverse proxy" server, like Caddy or Nginx, as follows:
-    * Proxy the websocket (default port 9764) to `/socket`.
-    * Serve the bracketcounter-web `dist` folder at `/` (the web root)
+    - Proxy the websocket (default port 9764) to `/socket`.
+    - Serve the bracketcounter-web `dist` folder at `/` (the web root)

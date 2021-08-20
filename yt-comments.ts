@@ -33,7 +33,6 @@ if (config.liveMode) {
 		})
 	});
 
-	//wss.on('error', (e) => console.log('websocket error'));
 }
 // Broadcast to all.
 function broadcast(data: string) {
@@ -54,11 +53,12 @@ function setTotalComments(ttotalComments: number) {
 }
 
 function scrubKey(config: any): any {
-	config.key = undefined
-    config.isAuthenticated = undefined
-    config.clientId = undefined
-    config.clientSecret = undefined
-	return config
+	let out = Object.assign({}, config)
+	out.key = undefined
+	out.isAuthenticated = undefined
+	out.clientId = undefined
+	out.clientSecret = undefined
+	return out
 }
 
 
@@ -98,7 +98,7 @@ let refreshN = 0;
 // regex helper, get all [x] letters in a comment
 function allMatches(str: string, checker: RegExp): Promise<Array<string>> {
 	return new Promise<Array<string>>(resolve => {
-        resolve(Array.from(str.toLowerCase().matchAll(checker)).map(x => x[1]))
+		resolve(Array.from(str.toLowerCase().matchAll(checker)).map(x => x[1]))
 	});
 }
 
@@ -113,7 +113,6 @@ function setDone(modStatus: string, doneValue: boolean) {
 
 // output results (used to only do when done, thus name)
 async function checkFinished() {
-	//if (!probablyDone) return;
 	if (!runningPostTask && probablyDone) {
 		runningPostTask = true;
 		refreshInterval = setInterval(() => {
@@ -121,7 +120,6 @@ async function checkFinished() {
 				if (probablyDone || refreshN >= 10) {
 					refreshN = 0
 					console.log("refresh")
-					//probablyDone = false // change this if things go wrong
 					api.paged = false
 					modStatuses.forEach(modStatus => {
 						api.loadComments(config.id, modStatus, undefined, true, true);
@@ -139,7 +137,7 @@ async function checkFinished() {
 				modStatuses.forEach(modStatus => {
 					api.loadComments(config.id, modStatus, undefined);
 				})
-            }
+			}
 		}, config.longRefreshTime * 1000);
 	}
 	finalVotes = {};
@@ -182,8 +180,7 @@ async function processEntry(entry: any) {
 	entries.push(entry);
 	if (!commentIds.hasOwnProperty(entry.id) || commentIds[entry.id] != entry.date) {
 		comments++;
-		if (+entry.date < +deadline) {
-		//if (1) {
+		if (+entry.date < +deadline && config.deadlineHours != 0) {
 			allMatches(entry.content, config.re).then((matches: RegExpMatchArray) => {
 				if (matches.length > 0) {
 					for (let match of matches) {
@@ -196,12 +193,10 @@ async function processEntry(entry: any) {
 							} else {
 								votingUsers[entry.userId] ++;
 							}
-							//for (let match of matches) {
 							if (!votes[match]) {
 								votes[match] = 0;
 							}
 							votes[match]++;
-							//}
 						} else {
 							multiVoters++;
 						}
@@ -220,7 +215,7 @@ async function processEntry(entry: any) {
 
 process.on('SIGINT', function () {
 	console.log("Caught interrupt signal");
-	save();
+	if (probablyDone) save();
 	process.exit();
 });
 
@@ -237,7 +232,7 @@ function save() {
 		comments: comments,
 		validVotes: validVotes,
 		finalVotes: finalVotes,
-        entries: entries
+		entries: entries
 	}
 	fs.writeFileSync(config.savestateFile, JSON.stringify(savestate));
 }
@@ -268,7 +263,7 @@ function go() {
 	finalVotes = {};
 	probablyDone = false;
 
-    api.apiFast("videos", {
+	api.apiFast("videos", {
 		part: "statistics,snippet",
 		id: config.id
 	}).then(resp => {
@@ -291,7 +286,7 @@ function go() {
 				api.loadComments(config.id, modStatus);
 			});
 		}
-	}, console.log);    
+	}, console.log);
 
 }
 

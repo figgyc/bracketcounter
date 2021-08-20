@@ -37,7 +37,7 @@ export class YoutubeAPI3 {
             const request = https.request({
                 path: parsedUrl.pathname + parsedUrl.search,
                 host: parsedUrl.hostname,
-                port: parsedUrl.port, 
+                port: parsedUrl.port,
                 method: post ? "POST" : "GET",
                 headers: post ? {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -55,17 +55,15 @@ export class YoutubeAPI3 {
                         (response.statusCode < 200 || response.statusCode > 299)
                     ) {
                         reject(
-                            
                             new Error(
                                 "Failed to load page, status code: "
-                                + url
-                                + response.statusMessage
-                                + " " + body.join("")
-                                // + util.inspect(response)
+                                + url + " "
+                                + response.statusMessage + " "
+                                + body.join("")
                             )
                         );
                     } else {
-                        resolve(body.join("")) 
+                        resolve(body.join(""))
                     }
                 });
             });
@@ -81,34 +79,29 @@ export class YoutubeAPI3 {
         Object.assign(parameters, await this.auth.authenticate());
         parameters.prettyPrint = false;
         let url: string = `https://www.googleapis.com/youtube/v3/${endpoint}`;
-        //console.log(url)
         let resp: string = ""
         try {
-            resp = await this.getContent(url, parameters); 
-        } catch(e) {
-            console.log("retrying", e)
-            n ++
+            resp = await this.getContent(url, parameters);
+        } catch (e) {
+            console.log(`Retrying (try ${n})`, e)
+            n++
             if (n < 10) {
                 return await this.apiFast(endpoint, parameters, n)
             } else {
                 console.log("Too many retries, giving up");
                 throw e
-                //process.exit();
             }
         }
-        //console.log(resp)
         const returnv = JSON.parse(resp);
         const final = {
             result: returnv,
             error: returnv.error
         };
-        //console.log(final, returnv);
         return final;
     }
 
     // paginate replies, dont run unless necessary since it eats quota
     async getReplies(id: string, pageToken?: string) {
-        //    gapi.client.youtube.comments.list({part: 'snippet', parentId: id, textFormat: 'plainText', maxResults: 100, pageToken: pageToken}).then(resp => {
         this.apiFast("comments", {
             part: "snippet",
             fields:
@@ -138,19 +131,18 @@ export class YoutubeAPI3 {
         if (item.replies != undefined) {
             for (let reply of item.replies.comments) {
                 reply.isReply = true;
-                // console.log("REPLY", reply)
             }
             if (item.replies.comments.length < item.snippet.totalReplyCount) {
-                if (!this.pageflag || (item.snippet.topLevelComment && item.snippet.topLevelComment.snippet.authorChannelId.value != this.uploader)) { // This is to prevent any JNJ pinned comments from disrupting the automatic page limiter since they are always scanned
+                if (!this.pageflag || (item.snippet.topLevelComment && item.snippet.topLevelComment.snippet.authorChannelId.value != this.uploader)) {
+                    // This is to prevent any pinned comments from disrupting the automatic page limiter since they are always scanned (the API has no pinned comment API so we use channel owner as a guess)
                     this.getReplies(item.id) //uses too much api but hey
                 }
             }
         }
-        if (item.snippet == undefined) console.log("no snippet", item)
         const snippet = item.snippet.topLevelComment
             ? item.snippet.topLevelComment.snippet
             : item.snippet;
-        if (snippet.authorChannelId != undefined && snippet.authorChannelId.value == this.uploader) { item.isReply = true } // This is to prevent any JNJ pinned comments from disrupting the automatic page limiter since they are always scanned
+        if (snippet.authorChannelId != undefined && snippet.authorChannelId.value == this.uploader) { item.isReply = true } // anti-pin
         const entry = {
             likes: snippet.likeCount ? snippet.likeCount : 0,
             content: snippet.textDisplay,
@@ -176,8 +168,7 @@ export class YoutubeAPI3 {
         pageflag: boolean = false
     ) {
         this.pageflag = pageflag
-        console.log("loading comments")
-        //    gapi.client.youtube.commentThreads.list({part: 'snippet', videoId: id, moderationStatus: modStatus, textFormat: 'plainText', order: 'time', maxResults: 100, pageToken: pageToken}).then(resp => {
+        console.log("Loading comments")
         this.apiFast("commentThreads", {
             part: "snippet,replies",
             fields:
@@ -201,9 +192,9 @@ export class YoutubeAPI3 {
                         this.loadComments(id, modStatus, obj.nextPageToken, paginate, pageflag);
                     } else {
                         this.setDone(modStatus, true);
-                        console.log("refresh done");
+                        console.log("Refresh done for " + modStatus + " comments");
                     }
-                
+
                 })
             }
             this.checkFinished();

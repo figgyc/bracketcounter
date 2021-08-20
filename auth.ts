@@ -10,10 +10,6 @@ import base64url from "base64url"
 import * as fs from "fs"
 import * as url from "url"
 import querystring from "querystring"
-import {
-  createHttpTerminator,
-} from 'http-terminator';
-
 interface AuthCache {
     accessToken: string
     tokenExpiry: number
@@ -24,11 +20,18 @@ export class AuthHelper {
 
     api: YoutubeAPI3
     isAuthing: boolean
+    isAuthCacheLoaded: boolean = false
+    authCache: AuthCache
     constructor(api: YoutubeAPI3) {
         this.api = api
         this.isAuthing = false
+        this.authCache = {
+            accessToken: "",
+            tokenExpiry: 0,
+            refreshToken: ""
+        }
     }
-    
+
     async authenticate(): Promise<any> {
         return new Promise<string>(async (resolve, _) => {
             while (this.isAuthing) { await this.api.snooze(1000) }
@@ -37,15 +40,11 @@ export class AuthHelper {
             if (config.isAuthenticated) {
                 // OAuth2 flow
                 // read auth cache
-                let authCache: AuthCache = {
-                    accessToken: "",
-                    tokenExpiry: 0,
-                    refreshToken: ""
+                if (!this.isAuthCacheLoaded && fs.existsSync(config.authCache)) {
+                    this.authCache = JSON.parse(fs.readFileSync(config.authCache, { encoding: "utf-8" }))
                 }
-                if (fs.existsSync(config.authCache)) {
-                    authCache = JSON.parse(fs.readFileSync(config.authCache, {encoding: "utf-8"}))
-                }
-                if (authCache.refreshToken == "") {
+                this.isAuthCacheLoaded = true
+                if (this.authCache.refreshToken == "") {
                     // no refresh token = no auth = we must login
                     let code_verifier = base64url.encode(crypto.randomBytes(96))
                     let code_challenge = base64url.encode(crypto.createHash("sha256").update(code_verifier).digest())
@@ -68,53 +67,55 @@ export class AuthHelper {
                         if (query != {} && query != undefined) {
                             authCode = query.code
                         }
-                        res.writeHead(200, {'Content-Type': 'text/plain'})
+                        res.writeHead(200, { 'Content-Type': 'text/plain' })
                         res.write('Authorization captured. Return to Bracketcounter.')
-                        res.end()
-                        const httpTerminator = createHttpTerminator({server})
-                        await httpTerminator.terminate()
-                                            
-                        // when the server is closed
                         console.log("Authorizing...")
-                        let parameters = {
-                            client_id: config.clientId,
-                            client_secret: config.clientSecret,
-                            redirect_uri: "http://127.0.0.1:" + port,
-                            code_verifier: code_verifier,
-                            code: authCode,
-                            grant_type: "authorization_code"
-                        }
-                        let tokenResp = await this.api.getContent("https://oauth2.googleapis.com/token", parameters, true)
-                        let tokenJson = JSON.parse(tokenResp)
-                        authCache.accessToken = tokenJson.access_token
-                        authCache.refreshToken = tokenJson.refresh_token
-                        authCache.tokenExpiry = +(new Date()) + (tokenJson.expires_in * 1000)
-                        fs.writeFileSync(config.authCache, JSON.stringify(authCache))
-                        authData.access_token = authCache.accessToken
-                        resolve(authData)
+                        res.end()
+                        server.close(() => {
+                            // when the server is closed
+                            let parameters = {
+                                client_id: config.clientId,
+                                client_secret: config.clientSecret,
+                                redirect_uri: "http://127.0.0.1:" + port,
+                                code_verifier: code_verifier,
+                                code: authCode,
+                                grant_type: "authorization_code"
+                            }
+                            this.api.getContent("https://oauth2.googleapis.com/token", parameters, true).then(tokenResp => {
+                                let tokenJson = JSON.parse(tokenResp)
+                                this.authCache.accessToken = tokenJson.access_token
+                                this.authCache.refreshToken = tokenJson.refresh_token
+                                this.authCache.tokenExpiry = +(new Date()) + (tokenJson.expires_in * 1000)
+                                fs.writeFileSync(config.authCache, JSON.stringify(this.authCache))
+                                authData.access_token = this.authCache.accessToken
+                                resolve(authData)
+                            })
+
+                        })
                     })
                     server.listen(port)
                 } else {
-                    if (authCache.tokenExpiry <= (+(new Date()) - 5000)) {
+                    if (this.authCache.tokenExpiry >= (+(new Date()) - 5000)) {
                         // use existing token
-                        authData.access_token = authCache.accessToken
+                        authData.access_token = this.authCache.accessToken
+                    } else {
+                        // refresh
+                        this.isAuthing = true
+                        console.log("Refreshing authorization...")
+                        let parameters = {
+                            client_id: config.clientId,
+                            client_secret: config.clientSecret,
+                            refresh_token: this.authCache.refreshToken,
+                            grant_type: "refresh_token"
+                        }
+                        let tokenResp = await this.api.getContent("https://oauth2.googleapis.com/token", parameters, true)
+                        let tokenJson = JSON.parse(tokenResp)
+                        this.authCache.accessToken = tokenJson.access_token
+                        this.authCache.tokenExpiry = +(new Date()) + (tokenJson.expires_in * 1000)
+                        fs.writeFileSync(config.authCache, JSON.stringify(this.authCache))
+                        this.isAuthing = false
+                        authData.access_token = this.authCache.accessToken
                     }
-                    // refresh
-                    this.isAuthing = true
-                    console.log("Refreshing authorization...")
-                    let parameters = {
-                        client_id: config.clientId,
-                        client_secret: config.clientSecret,
-                        refresh_token: authCache.refreshToken,
-                        grant_type: "refresh_token"
-                    }
-                    let tokenResp = await this.api.getContent("https://oauth2.googleapis.com/token", parameters, true)
-                    let tokenJson = JSON.parse(tokenResp)
-                    authCache.accessToken = tokenJson.access_token
-                    authCache.tokenExpiry = +(new Date()) + (tokenJson.expires_in * 1000)
-                    fs.writeFileSync(config.authCache, JSON.stringify(authCache))
-                    this.isAuthing = false
-                    authData.access_token = authCache.accessToken
                     resolve(authData)
                 }
             } else {
@@ -122,7 +123,7 @@ export class AuthHelper {
                 authData.key = config.key
                 resolve(authData)
             }
-            
+
         })
     }
 
