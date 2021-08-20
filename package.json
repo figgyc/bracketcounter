@@ -10,7 +10,7 @@
     "domexception": "^2.0.1",
     "open": "^8.0.4",
     "toml": "^3.0.0",
-    "ws": "^4.0.0"
+    "ws": "^5.2.3"
   },
   "devDependencies": {
     "@types/async": "^3.2.3",
