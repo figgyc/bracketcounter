@@ -20,7 +20,8 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "tsc"
   },
   "bin": {
     "yt-comments": "dist/yt-comments.js"

@@ -12,7 +12,7 @@
       overlay =
         (final: prev: {
           # The application
-          bracketcounter = prev.pkgs.callPackage ./. {
+          bracketcounter = prev.pkgs.callPackage self {
             src = self;
             node2nix = (prev.pkgs.callPackage node2nix {}).package;
           };
@@ -105,7 +105,7 @@
           };
       };
 
-    } // (flake-utils.lib.eachDefaultSystem (system:
+    } // (flake-utils.lib.eachSystem ["x86_64-linux" "aarch64-linux"] (system:
       let
         pkgs = import nixpkgs {
           inherit system;
