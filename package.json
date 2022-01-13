@@ -9,7 +9,7 @@
     "console-stamp": "^3.0.0-rc4.3",
     "open": "^8.0.4",
     "toml": "^3.0.0",
-    "ws": "^8.2.0"
+    "ws": "8.3.0"
   },
   "devDependencies": {
     "@types/async": "^3.2.3",
@@ -17,7 +17,7 @@
     "@types/iarna__toml": "^2.0.1",
     "@types/node": "^9.6.55",
     "@types/ws": "^4.0.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.10"
   },
   "scripts": {
     "build": "tsc",
