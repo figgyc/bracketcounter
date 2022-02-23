@@ -17,6 +17,7 @@
             name = "bracketcounter";
             postBuild = ''
               ${yarn-run} tsc
+              chmod +x deps/yt-comments/dist/yt-comments.js
             '';
             publishBinsFor = ["yt-comments"];
           };
