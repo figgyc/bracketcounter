@@ -5,8 +5,6 @@ import WebSocket from "ws";
 import * as fs from "fs";
 const api = new YoutubeAPI3(checkFinished, processEntry, setDone, setTotalComments)
 
-require('console-stamp')(console, []);
-
 let wss: WebSocket.Server | undefined = undefined
 
 let clientMap: { [ip: string]: WebSocket } = {}
@@ -181,9 +179,7 @@ async function processEntry(entry: any) {
     entries.push(entry);
     if (!commentIds.hasOwnProperty(entry.id) || commentIds[entry.id] != entry.date) {
         comments++;
-        console.log("a");
         if (+entry.date < +deadline || config.deadlineHours == 0) {
-            console.log("b");
             allMatches(entry.content, config.re).then((matches: RegExpMatchArray) => {
                 if (matches.length > 0) {
                     for (let match of matches) {

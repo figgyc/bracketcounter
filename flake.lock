@@ -30,45 +30,10 @@
         "type": "github"
       }
     },
-    "node2nix": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1636910206,
-        "narHash": "sha256-X2nKVfx053NP7Gxir/NmQRNUoga7RxO//PFPN8rGuI0=",
-        "owner": "svanderburg",
-        "repo": "node2nix",
-        "rev": "0deb18a0b62669e62f34cd60286f38f4ac4bf0e8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "svanderburg",
-        "repo": "node2nix",
-        "type": "github"
-      }
-    },
-    "npmlock2nix": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1634186821,
-        "narHash": "sha256-/jtBPbfcdLqpx1HUB5F4apSt+QGLsRp0lyjDgoVKYHo=",
-        "owner": "tshaynik",
-        "repo": "npmlock2nix",
-        "rev": "67c3a904815bc8b63e200da6ebf9ba05c4fd2580",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tshaynik",
-        "ref": "package-dir-in-tar",
-        "repo": "npmlock2nix",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
-        "node2nix": "node2nix",
-        "npmlock2nix": "npmlock2nix"
+        "nixpkgs": "nixpkgs"
       }
     }
   },

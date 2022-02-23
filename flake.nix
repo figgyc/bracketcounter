@@ -10,9 +10,15 @@
       overlay =
         (final: prev: rec {
           # The application
-          bracketcounter = prev.pkgs.mkYarnPackage {
+          bracketcounter = let
+            yarn-run = "yarn run --offline --ignore-scripts --ignore-engines --";
+          in prev.pkgs.mkYarnPackage {
             src = ./.;
             name = "bracketcounter";
+            postBuild = ''
+              ${yarn-run} tsc
+            '';
+            publishBinsFor = ["yt-comments"];
           };
         });
 
@@ -87,7 +93,7 @@
                   root = "/var/www";
 
                   locations."/" = {
-                    root = "${pkgs.bracketcounter-web}/lib/node_modules/bracketcounter-web/dist/";
+                    root = "${pkgs.bracketcounter-web}/libexec/bracketcounter-web/deps/bracketcounter-web/dist/";
                   };
                   locations."/socket" = {
                     proxyPass = "http://localhost:9764"; # without a trailing /
