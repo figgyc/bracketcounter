@@ -7,27 +7,24 @@ const api = new YoutubeAPI3(checkFinished, processEntry, setDone, setTotalCommen
 
 let wss: WebSocket.Server | undefined = undefined
 
-let clientMap: { [ip: string]: WebSocket } = {}
-let authenticatedClients: Set<String> = new Set()
+function heartbeat(this: any) {
+  this.isAlive = true;
+}
 
 if (config.liveMode) {
     wss = new WebSocket.Server({ port: config.port });
 
-    wss.on('connection', (ws, request) => {
-        let ip = request.connection.remoteAddress!.toString()
-        clientMap[ip] = ws;
+    wss.on('connection', (ws) => {
+        (ws as any).isAlive = true;
+        ws.on('pong', heartbeat);
         ws.on('error', () => console.log('websocket error'));
         ws.on('message', data => {
             try {
                 if (data.toString() == config.accessCode) {
                     ws.send(JSON.stringify(currentMessage));
-                    authenticatedClients.add(ip)
+                    (ws as any).authed = true;
                 }
             } catch {}
-        })
-        ws.on("close", () => {
-            delete clientMap[ip];
-            authenticatedClients.delete(ip);
         })
     });
 
@@ -37,9 +34,13 @@ function broadcast(data: string) {
     if (data == "{}") return // don't send empty data
     console.log(data)
     if (wss != undefined) {
-        Object.keys(clientMap).forEach(ip => {
-            if (clientMap[ip].readyState === WebSocket.OPEN && authenticatedClients.has(ip)) {
-                clientMap[ip].send(data);
+        wss.clients.forEach(ws => {
+            if ((ws as any).isAlive === false) return ws.terminate();
+            (ws as any).isAlive = false;
+            ws.ping(() => {});
+
+            if (ws.readyState === WebSocket.OPEN && (ws as any).authed) {
+                ws.send(data);
             }
         })
     }
