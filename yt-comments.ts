@@ -213,11 +213,14 @@ async function processEntry(entry: any) {
     }
 }
 
-process.on('SIGINT', function () {
+function handleSignal () {
     console.log("Caught interrupt signal");
     if (probablyDone) save();
     process.exit();
-});
+}
+
+process.on('SIGINT', handleSignal);
+process.on('SIGTERM', handleSignal);
 
 function save() {
     let savestate = {
