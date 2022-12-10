@@ -105,7 +105,7 @@ export class YoutubeAPI3 {
         this.apiFast("comments", {
             part: "snippet",
             fields:
-                "items(id,snippet(textDisplay,authorChannelId,updatedAt)),nextPageToken",
+                "items(id,snippet(textDisplay,authorChannelId,updatedAt,publishedAt)),nextPageToken",
             parentId: id,
             textFormat: "plainText",
             maxResults: 100,

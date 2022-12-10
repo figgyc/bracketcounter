@@ -63,8 +63,8 @@ export class AuthHelper {
                     let authCode = ""
                     let server = http.createServer(async (req, res) => {
                         let aUrl = new url.URL(req.url!, `http://${req.headers.host}`)
-                        let query = querystring.parse(aUrl.search.substring(1)) as any
-                        if (query != {} && query != undefined) {
+                        let query = querystring.parse(aUrl.search.substring(1))
+                        if (query !== undefined && query.code !== undefined && typeof query.code == 'string') {
                             authCode = query.code
                         }
                         res.writeHead(200, { 'Content-Type': 'text/plain' })

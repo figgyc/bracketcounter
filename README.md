@@ -12,8 +12,7 @@ For any case, the first steps:
 1. Run in a command prompt / terminal in the Bracketcounter folder (if you don't know what the command prompt is, Google it):
 ```sh
 npm install --dev
-npm i -g typescript
-tsc
+npx tsc
 ```
 
 The next setup stage depends on what you want to use Bracketcounter to do. If you want to count other people's videos, or if you want to count your own videos, but aren't bothered about counting votes caught in the "Held for review" section of YouTube Studio, go with the easy setup. If you need to count held comments on your own videos, you'll have to use the harder setup.
@@ -32,7 +31,7 @@ This allows you to count "held for review" comments, but it is slightly harder t
 3. The first time you run Bracketcounter you will be asked to paste in a link to your browser (or it might open automatically), where you can sign in with Google. Make sure to pick the YouTube channel where you uploaded the videos to. The result of this is saved to `authdata.json`, don't share it! **Note:** You may see a "Google hasn't verified this app" screen, you can ignore it by going to Advanced and then "Go to app (unsafe)**.
 
 ## How to use
-**Once you've done the setup**,  run, `node yt-comments.js` in the terminal. Once the results are done counting they should appear in the command prompt/terminal window. Press Ctrl+C to exit safely once the count is complete. For the most accurate numbers and data analysis, you should process `savestate.json` with [the data tools](https://github.com/figgyc/bracketcounter-datastuff).
+**Once you've done the setup**,  run, `node dist/yt-comments.js` in the terminal. Once the results are done counting they should appear in the command prompt/terminal window. Press Ctrl+C to exit safely once the count is complete. For the most accurate numbers and data analysis, you should process `savestate.json` with [the data tools](https://github.com/figgyc/bracketcounter-datastuff).
 If you're having any trouble feel free to ask me.
 
 ## Known issues
@@ -48,4 +47,4 @@ This **requires technical knowledge** of network administration.
 1. Set up a "reverse proxy" server, like Caddy or Nginx, as follows:
     - Proxy the websocket (default port 9764) to `/socket`.
     - Serve the bracketcounter-web `dist` folder at `/` (the web root)
-1. Run your web server and `node yt-comments.js` at the same time.
+1. Run your web server and `node dist/yt-comments.js` at the same time.
